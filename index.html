@@ -26,6 +26,8 @@
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <span class="text-2xl font-black text-brandPink tracking-tight">TOKENS</span>
+                <!-- Live Clock Element Integrated with API Fetch -->
+                <span id="live-clock" class="hidden sm:inline-block ml-4 text-xs font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-full">📍 IST: Connecting API...</span>
             </div>
             <nav class="hidden md:flex items-center space-x-8 font-medium text-sm text-gray-600">
                 <a href="#hub" class="hover:text-brandPink transition">Multi-Store Hub</a>
@@ -550,34 +552,50 @@
         </div>
     </footer>
 
-    <!-- JavaScript Logic: Clean Native IST Time & Interactions -->
+    <!-- JavaScript Logic: Fetch API for IST Live Time & Form Handling -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             console.log("Tokens Gifting Platform loaded successfully!");
 
-            // Clean Native IST Time Handler (No external API calls or CORS errors)
+            // Live Time Fetching Logic using World Time API with Fallback
             const clockEl = document.getElementById("live-clock");
-            function updateLiveTime() {
+            
+            async function fetchLiveTime() {
                 try {
-                    const now = new Date();
-                    const options = { 
-                        timeZone: 'Asia/Kolkata', 
+                    const response = await fetch("https://worldtimeapi.org/api/timezone/Asia/Kolkata");
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    const data = await response.json();
+                    
+                    // Parse datetime string from API response
+                    const datetime = new Date(data.datetime);
+                    const timeString = datetime.toLocaleTimeString('en-US', { 
                         hour: '2-digit', 
-                        minute: '2-digit',
+                        minute: '2-digit', 
                         hour12: true 
-                    };
-                    const timeString = new Intl.DateTimeFormat('en-US', options).format(now);
+                    });
+                    
                     if (clockEl) {
-                        clockEl.textContent = `📍 IST: ${timeString} (Live)`;
+                        clockEl.textContent = `📍 IST: ${timeString} (Live API)`;
                     }
                 } catch (error) {
+                    console.warn("WorldTimeAPI fetch failed, falling back to local time system:", error);
+                    // Fallback to client browser timezone calculation if network fetch fails
+                    const now = new Date();
+                    const timeString = now.toLocaleTimeString('en-US', { 
+                        timeZone: 'Asia/Kolkata', 
+                        hour: '2-digit', 
+                        minute: '2-digit', 
+                        hour12: true 
+                    });
                     if (clockEl) {
-                        clockEl.textContent = `📍 IST: Time Sync`;
+                        clockEl.textContent = `📍 IST: ${timeString} (Synced)`;
                     }
                 }
             }
-            updateLiveTime();
-            setInterval(updateLiveTime, 60000);
+
+            // Initial fetch call and regular polling interval (every 60 seconds)
+            fetchLiveTime();
+            setInterval(fetchLiveTime, 60000);
         });
     </script>
 
