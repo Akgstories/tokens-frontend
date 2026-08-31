@@ -612,5 +612,67 @@
         });
     </script>
 
+    <!-- JavaScript Logic: Live Time & Mock Form Handling -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("Tokens Gifting Platform loaded successfully!");
+
+            // 1. Clean Native IST Time Fetch (No external network blocks or CORS errors)
+            const clockEl = document.getElementById("live-clock");
+            function updateLiveTime() {
+                try {
+                    const now = new Date();
+                    // Format directly to IST using modern browser localization
+                    const options = { 
+                        timeZone: 'Asia/Kolkata', 
+                        hour: '2-digit', 
+                        minute: '2-digit',
+                        hour12: true 
+                    };
+                    const timeString = new Intl.DateTimeFormat('en-US', options).format(now);
+                    if (clockEl) {
+                        clockEl.textContent = `📍 IST: ${timeString} (Live)`;
+                    }
+                } catch (error) {
+                    if (clockEl) {
+                        clockEl.textContent = `📍 IST: Time Sync`;
+                    }
+                }
+            }
+            updateLiveTime();
+            setInterval(updateLiveTime, 60000); // Refresh every minute
+
+            // 2. Mock Form Submission Handling for Interactive Forms
+            const handleFormSubmission = (formId, successMessage) => {
+                const form = document.getElementById(formId);
+                if (form) {
+                    form.addEventListener("submit", (e) => {
+                        e.preventDefault();
+                        const submitBtn = form.querySelector("button[type='submit']");
+                        const originalText = submitBtn ? submitBtn.textContent : "";
+                        
+                        if (submitBtn) {
+                            submitBtn.disabled = true;
+                            submitBtn.textContent = "Processing...";
+                        }
+
+                        setTimeout(() => {
+                            alert(successMessage);
+                            form.reset();
+                            if (submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = originalText;
+                            }
+                        }, 800);
+                    });
+                }
+            };
+
+            handleFormSubmission("contact-form", "Thank you! Your message has been sent to Tokens support.");
+            handleFormSubmission("partner-form", "Application submitted successfully! Our partner team will reach out within 24 hours.");
+            handleFormSubmission("corporate-form", "Corporate catalog request received! We will email your custom quote shortly.");
+        });
+    </script>
+
 </body>
 </html>
