@@ -486,3 +486,69 @@
     </script>
 </body>
 </html>
+
+// login page code
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<div class="auth-container">
+    <h2>Welcome to Tokens</h2>
+    <form id="authForm">
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit" id="loginBtn">Log In</button>
+        <button type="button" id="signupBtn">Sign Up</button>
+        <button type="button" id="signupBtn">Sign Up</button>
+    </form>
+    <p id="authMessage"></p>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    // Initialize Supabase client
+    const SUPABASE_URL = 'https://xhipfasywzgkmpoogaaz.supabase.co';
+    const SUPABASE_ANON_KEY = 'Tokensdatabase02';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const authForm = document.getElementById('authForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const authMessage = document.getElementById('authMessage');
+
+    // Handle Log In
+    loginBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: emailInput.value,
+            password: passwordInput.value,
+        });
+
+        if (error) {
+            authMessage.style.color = 'red';
+            authMessage.textContent = error.message;
+        } else {
+            authMessage.style.color = 'green';
+            authMessage.textContent = 'Logged in successfully! Redirecting...';
+            setTimeout(() => window.location.href = '/dashboard.html', 1000);
+        }
+    });
+
+    // Handle Sign Up
+    signupBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const { data, error } = await supabaseClient.auth.signUp({
+            email: emailInput.value,
+            password: passwordInput.value,
+        });
+
+        if (error) {
+            authMessage.style.color = 'red';
+            authMessage.textContent = error.message;
+        } else {
+            authMessage.style.color = 'green';
+            authMessage.textContent = 'Account created! Check your email for verification if enabled.';
+        }
+    });
+</script>
