@@ -42,6 +42,7 @@
             </nav>
 
             <div class="hidden md:flex items-center space-x-4">
+                <button onclick="switchPage('auth')" class="text-gray-700 font-semibold text-sm hover:text-brandPink transition px-3 py-2">Log In</button>
                 <button onclick="switchPage('catalog')" class="bg-brandPink text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-brandPink/25 hover:bg-pink-700 transition">Start Gifting</button>
             </div>
 
@@ -55,12 +56,13 @@
 
         <!-- Mobile Dropdown Menu Drawer -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-100 px-6 py-6 space-y-4 shadow-xl">
-            <button onclick="switchPage('home'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPy hover:text-brandPink">Home</button>
+            <button onclick="switchPage('home'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Home</button>
             <button onclick="switchPage('hub'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Multi-Store Hub</button>
             <button onclick="switchPage('catalog'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Shop Gifts</button>
             <button onclick="switchPage('pool-gifting'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Pool Gifting</button>
             <button onclick="switchPage('corporate'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Corporate</button>
             <button onclick="switchPage('onboard'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Partner With Us</button>
+            <button onclick="switchPage('auth'); toggleMobileMenu();" class="block w-full text-left font-semibold text-gray-800 hover:text-brandPink">Log In / Sign Up</button>
             <button onclick="switchPage('catalog'); toggleMobileMenu();" class="w-full bg-brandPink text-white py-3 rounded-xl font-bold text-sm shadow-md text-center block">Start Gifting</button>
         </div>
     </header>
@@ -115,6 +117,54 @@
                             Customize & Order
                         </button>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: LOGIN / AUTH -->
+        <section id="page-auth" class="page-view hidden py-20 bg-gray-50 min-h-[80vh] flex items-center justify-center">
+            <div class="max-w-md w-full px-6">
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 space-y-6 text-center">
+                    <div>
+                        <span class="text-xs font-bold tracking-widest text-brandPink uppercase bg-brandPink/10 px-3 py-1 rounded-full">Secure Access</span>
+                        <h2 class="text-3xl font-black text-gray-900 mt-3">Welcome to Tokens</h2>
+                        <p class="text-sm text-gray-500 mt-1">Sign in or create your account to manage orders</p>
+                    </div>
+                    
+                    <form id="authForm" class="space-y-4 text-left">
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-gray-700 uppercase">Email Address</label>
+                            <input type="email" id="email" placeholder="name@example.com" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink" />
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-gray-700 uppercase">Password</label>
+                            <input type="password" id="password" placeholder="••••••••" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink" />
+                        </div>
+                        <div class="flex gap-3 pt-2">
+                            <button type="submit" id="loginBtn" class="flex-1 bg-brandPink text-white py-3.5 rounded-xl font-bold text-sm shadow-md hover:bg-pink-700 transition">Log In</button>
+                            <button type="button" id="signupBtn" class="flex-1 bg-gray-100 text-gray-700 py-3.5 rounded-xl font-bold text-sm hover:bg-gray-200 transition">Sign Up</button>
+                        </div>
+                    </form>
+
+                    <!-- Divider -->
+                    <div class="relative flex py-2 items-center">
+                        <div class="flex-grow border-t border-gray-200"></div>
+                        <span class="flex-shrink mx-4 text-gray-400 text-xs uppercase font-bold">Or</span>
+                        <div class="flex-grow border-t border-gray-200"></div>
+                    </div>
+
+                    <!-- Google OAuth Button -->
+                    <button type="button" id="googleLoginBtn" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 text-gray-700 py-3.5 rounded-xl font-bold text-sm shadow-sm hover:bg-gray-50 transition">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.15 21.32 7.22 24 12 24z"/>
+                            <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.18C.43 8.12 0 9.83 0 12s.43 3.88 1.18 5.4l4.09-3.16z"/>
+                            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.15 2.68 1.18 6.6l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/>
+                        </svg>
+                        Continue with Google
+                    </button>
+
+                    <p id="authMessage" class="text-xs font-semibold text-center"></p>
                 </div>
             </div>
         </section>
@@ -281,6 +331,11 @@
     <script>
         const RENDER_BACKEND_URL = 'https://tokens-backend-1.onrender.com';
 
+        // Initialize Supabase Client (Replace these with your actual Supabase project keys)
+        const SUPABASE_URL = 'https://your-project-id.supabase.co';
+        const SUPABASE_ANON_KEY = 'your-supabase-anon-key';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         // Page Router Function
         function switchPage(pageId) {
             const pages = document.querySelectorAll('.page-view');
@@ -312,6 +367,72 @@
 
             // Load Products Catalog
             loadProductsCatalog();
+
+            // Supabase Auth Handlers
+            const authForm = document.getElementById('authForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const loginBtn = document.getElementById('loginBtn');
+            const signupBtn = document.getElementById('signupBtn');
+            const authMessage = document.getElementById('authMessage');
+
+            if (loginBtn && signupBtn && authForm) {
+                // Handle Log In
+                loginBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    authMessage.textContent = "Logging in...";
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({
+                        email: emailInput.value,
+                        password: passwordInput.value,
+                    });
+
+                    if (error) {
+                        authMessage.style.color = '#dc2626';
+                        authMessage.textContent = error.message;
+                    } else {
+                        authMessage.style.color = '#16a34a';
+                        authMessage.textContent = 'Logged in successfully! Redirecting...';
+                        setTimeout(() => switchPage('home'), 1000);
+                    }
+                });
+
+                // Handle Sign Up
+                signupBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    authMessage.textContent = "Creating account...";
+                    const { data, error } = await supabaseClient.auth.signUp({
+                        email: emailInput.value,
+                        password: passwordInput.value,
+                    });
+
+                    if (error) {
+                        authMessage.style.color = '#dc2626';
+                        authMessage.textContent = error.message;
+                    } else {
+                        authMessage.style.color = '#16a34a';
+                        authMessage.textContent = 'Account created! Check your email for verification.';
+                    }
+                });
+            }
+
+            // Google OAuth Login Handler
+            const googleLoginBtn = document.getElementById('googleLoginBtn');
+            if (googleLoginBtn) {
+                googleLoginBtn.addEventListener('click', async () => {
+                    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: {
+                            redirectTo: window.location.origin
+                        }
+                    });
+
+                    if (error) {
+                        const authMessage = document.getElementById('authMessage');
+                        authMessage.style.color = '#dc2626';
+                        authMessage.textContent = error.message;
+                    }
+                });
+            }
 
             // Order Form Handler
             const orderForm = document.getElementById("order-form");
@@ -486,19 +607,4 @@
     </script>
 </body>
 </html>
-
-// login page code
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<div class="auth-container">
-    <h2>Welcome to Tokens</h2>
-    <form id="authForm">
-        <input type="password" id="password" placeholder="Password" required />
-        <button type="submit" id="loginBtn">Log In</button>
-        <button type="button" id="signupBtn">Sign Up</button>
-        <button type="button" id="signupBtn">Sign Up</button>
-    </form>
-    <p id="authMessage"></p>
-</div>
-
 
