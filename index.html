@@ -30,6 +30,8 @@
                 <span onclick="switchPage('home')" class="text-2xl font-black text-brandPink tracking-tight cursor-pointer">TOKENS</span>
                 <span id="live-clock" class="hidden sm:inline-block ml-4 text-xs font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-full">📍 IST: Connecting...</span>
             </div>
+
+            <!-- Desktop Nav Links -->
             <nav class="hidden md:flex items-center space-x-8 font-medium text-sm text-gray-600">
                 <button onclick="switchPage('home')" class="hover:text-brandPink transition focus:outline-none">Home</button>
                 <button onclick="switchPage('hub')" class="hover:text-brandPink transition focus:outline-none">Multi-Store Hub</button>
@@ -38,9 +40,28 @@
                 <button onclick="switchPage('corporate')" class="hover:text-brandPink transition focus:outline-none">Corporate</button>
                 <button onclick="switchPage('onboard')" class="hover:text-brandPink transition focus:outline-none">Partner With Us</button>
             </nav>
-            <div class="flex items-center space-x-4">
+
+            <div class="hidden md:flex items-center space-x-4">
                 <button onclick="switchPage('catalog')" class="bg-brandPink text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-brandPink/25 hover:bg-pink-700 transition">Start Gifting</button>
             </div>
+
+            <!-- Mobile Hamburger Menu Button -->
+            <button onclick="toggleMobileMenu()" class="md:hidden text-gray-700 focus:outline-none p-2">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown Menu Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-100 px-6 py-6 space-y-4 shadow-xl">
+            <button onclick="switchPage('home'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPy hover:text-brandPink">Home</button>
+            <button onclick="switchPage('hub'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Multi-Store Hub</button>
+            <button onclick="switchPage('catalog'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Shop Gifts</button>
+            <button onclick="switchPage('pool-gifting'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Pool Gifting</button>
+            <button onclick="switchPage('corporate'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Corporate</button>
+            <button onclick="switchPage('onboard'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Partner With Us</button>
+            <button onclick="switchPage('catalog'); toggleMobileMenu();" class="w-full bg-brandPink text-white py-3 rounded-xl font-bold text-sm shadow-md text-center block">Start Gifting</button>
         </div>
     </header>
 
@@ -270,6 +291,12 @@
                 target.classList.remove('hidden');
                 window.scrollTo(0, 0);
             }
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobile-menu");
+            menu.classList.toggle("hidden");
         }
 
         document.addEventListener("DOMContentLoaded", () => {
