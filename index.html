@@ -42,7 +42,11 @@
             </nav>
 
             <div class="hidden md:flex items-center space-x-4">
-                <button onclick="switchPage('auth')" class="text-gray-700 font-semibold text-sm hover:text-brandPink transition px-3 py-2">Log In</button>
+                <!-- Cart Button -->
+                <button onclick="toggleCart()" class="relative text-gray-700 hover:text-brandPink transition p-2">
+                    🛒 <span id="cart-badge" class="absolute -top-1 -right-1 bg-brandPink text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
+                <button id="nav-auth-btn" onclick="handleAuthNavClick()" class="text-gray-700 font-semibold text-sm hover:text-brandPink transition px-3 py-2">Log In</button>
                 <button onclick="switchPage('catalog')" class="bg-brandPink text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-brandPink/25 hover:bg-pink-700 transition">Start Gifting</button>
             </div>
 
@@ -62,7 +66,8 @@
             <button onclick="switchPage('pool-gifting'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Pool Gifting</button>
             <button onclick="switchPage('corporate'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Corporate</button>
             <button onclick="switchPage('onboard'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Partner With Us</button>
-            <button onclick="switchPage('auth'); toggleMobileMenu();" class="block w-full text-left font-semibold text-gray-800 hover:text-brandPink">Log In / Sign Up</button>
+            <button onclick="toggleCart(); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Cart 🛒</button>
+            <button onclick="handleAuthNavClick(); toggleMobileMenu();" id="mobile-auth-btn" class="block w-full text-left font-semibold text-gray-800 hover:text-brandPink">Log In / Sign Up</button>
             <button onclick="switchPage('catalog'); toggleMobileMenu();" class="w-full bg-brandPink text-white py-3 rounded-xl font-bold text-sm shadow-md text-center block">Start Gifting</button>
         </div>
     </header>
@@ -281,6 +286,47 @@
 
     </main>
 
+    <!-- Shopping Cart Slide-over Drawer -->
+    <div id="cart-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+            <h2 class="text-lg font-black text-gray-900">Your Shopping Cart 🛒</h2>
+            <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-600 font-bold text-2xl">&times;</button>
+        </div>
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4">
+            <p class="text-gray-400 text-center py-12 text-sm">Your cart is empty.</p>
+        </div>
+        <div class="p-5 border-t border-gray-100 bg-gray-50 space-y-4">
+            <div class="flex justify-between text-base font-bold text-gray-900">
+                <p>Subtotal</p>
+                <p id="cart-subtotal">₹0</p>
+            </div>
+            <button onclick="proceedToCheckout()" class="w-full bg-brandPink text-white py-3.5 rounded-xl font-bold text-sm shadow-md hover:bg-pink-700 transition">
+                Proceed to Checkout ✨
+            </button>
+        </div>
+    </div>
+
+    <!-- User Dashboard Modal -->
+    <div id="dashboard-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-8 relative space-y-6 shadow-2xl">
+            <button onclick="toggleDashboard()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 font-bold text-xl">✕</button>
+            <div>
+                <span class="text-xs font-bold text-brandPink uppercase tracking-wider">Account Portal</span>
+                <h3 class="text-2xl font-black text-gray-900 mt-1">User Dashboard</h3>
+                <p id="dashboard-user-email" class="text-xs text-gray-500 font-semibold mt-0.5">-</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 text-sm mb-3">Your Recent Orders</h4>
+                <div id="dashboard-orders-list" class="space-y-3 max-h-60 overflow-y-auto pr-1">
+                    <p class="text-xs text-gray-400">Loading orders...</p>
+                </div>
+            </div>
+            <button onclick="handleLogout()" class="w-full bg-red-50 text-red-600 py-3 rounded-xl font-bold text-sm hover:bg-red-100 transition">
+                Log Out of Account
+            </button>
+        </div>
+    </div>
+
     <!-- Personalization Modal -->
     <div id="personalization-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-lg w-full p-8 relative space-y-6 shadow-2xl">
@@ -312,7 +358,7 @@
                     <input type="text" id="sender-name" placeholder="e.g., Aditya Kumar" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brandPink">
                 </div>
                 <button type="submit" id="order-submit-btn" class="w-full bg-brandPink text-white py-3.5 rounded-xl font-bold text-sm shadow-lg hover:bg-pink-700 transition">
-                    Confirm & Place Local Order ✨
+                    Add to Cart & Order ✨
                 </button>
                 <p id="order-status" class="text-xs text-center font-semibold text-brandPink hidden"></p>
             </form>
@@ -331,10 +377,13 @@
     <script>
         const RENDER_BACKEND_URL = 'https://tokens-backend-1.onrender.com';
 
-        // Initialize Supabase Client (Replace these with your actual Supabase project keys)
+        // Initialize Supabase Client
         const SUPABASE_URL = "https://xhipfasywzgkmpoogaaz.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_K1MGEBgEhHL50VGjS5pipQ_JJfWFDhc";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let cart = [];
+        let currentUser = null;
 
         // Page Router Function
         function switchPage(pageId) {
@@ -354,7 +403,40 @@
             menu.classList.toggle("hidden");
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
+        // Cart Drawer Toggle
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('translate-x-full');
+        }
+
+        // Dashboard Modal Toggle
+        async function toggleDashboard() {
+            const modal = document.getElementById('dashboard-modal');
+            modal.classList.toggle('hidden');
+            
+            if (!modal.classList.contains('hidden') && currentUser) {
+                document.getElementById('dashboard-user-email').textContent = currentUser.email;
+                fetchUserOrders(currentUser.email);
+            }
+        }
+
+        // Handle Dynamic Top Nav Auth/Dashboard Button Click
+        function handleAuthNavClick() {
+            if (currentUser) {
+                toggleDashboard();
+            } else {
+                switchPage('auth');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Check active session on load
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                currentUser = session.user;
+                updateAuthButtonUI();
+            }
+
             // Live IST Clock
             const clockEl = document.getElementById("live-clock");
             function updateLiveTime() {
@@ -377,7 +459,6 @@
             const authMessage = document.getElementById('authMessage');
 
             if (loginBtn && signupBtn && authForm) {
-                // Handle Log In
                 loginBtn.addEventListener('click', async (e) => {
                     e.preventDefault();
                     authMessage.textContent = "Logging in...";
@@ -390,13 +471,14 @@
                         authMessage.style.color = '#dc2626';
                         authMessage.textContent = error.message;
                     } else {
+                        currentUser = data.user;
+                        updateAuthButtonUI();
                         authMessage.style.color = '#16a34a';
                         authMessage.textContent = 'Logged in successfully! Redirecting...';
                         setTimeout(() => switchPage('home'), 1000);
                     }
                 });
 
-                // Handle Sign Up
                 signupBtn.addEventListener('click', async (e) => {
                     e.preventDefault();
                     authMessage.textContent = "Creating account...";
@@ -419,31 +501,19 @@
             const googleLoginBtn = document.getElementById('googleLoginBtn');
             if (googleLoginBtn) {
                 googleLoginBtn.addEventListener('click', async () => {
-                    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+                    await supabaseClient.auth.signInWithOAuth({
                         provider: 'google',
-                        options: {
-                            redirectTo: window.location.origin
-                        }
+                        options: { redirectTo: window.location.origin }
                     });
-
-                    if (error) {
-                        const authMessage = document.getElementById('authMessage');
-                        authMessage.style.color = '#dc2626';
-                        authMessage.textContent = error.message;
-                    }
                 });
             }
 
-            // Order Form Handler
+            // Order / Personalization Form Handler
             const orderForm = document.getElementById("order-form");
             if (orderForm) {
-                orderForm.addEventListener("submit", async (e) => {
+                orderForm.addEventListener("submit", (e) => {
                     e.preventDefault();
-                    const btn = document.getElementById("order-submit-btn");
-                    const status = document.getElementById("order-status");
-                    btn.textContent = "Processing Order...";
-
-                    const orderPayload = {
+                    const item = {
                         product_id: document.getElementById("modal-product-id").value,
                         store_name: document.getElementById("modal-store-input").value,
                         item_name: document.getElementById("modal-name-input").value,
@@ -451,28 +521,15 @@
                         delivery_address: document.getElementById("delivery-address").value,
                         gift_message: document.getElementById("gift-message").value,
                         sender_name: document.getElementById("sender-name").value,
-                        price: parseFloat(document.getElementById("modal-price-input").value)
+                        price: parseFloat(document.getElementById("modal-price-input").value),
+                        quantity: 1
                     };
 
-                    try {
-                        const response = await fetch(`${RENDER_BACKEND_URL}/api/orders`, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(orderPayload)
-                        });
-                        const result = await response.json();
-                        status.classList.remove("hidden");
-                        if (response.ok) {
-                            status.textContent = "Order placed successfully! Express delivery initiated 🚀";
-                            setTimeout(() => { closeModal(); orderForm.reset(); status.classList.add("hidden"); }, 2500);
-                        } else {
-                            status.textContent = "Error: " + (result.detail || "Failed to place order");
-                        }
-                    } catch (err) {
-                        status.classList.remove("hidden");
-                        status.textContent = "Network error connecting to backend.";
-                    }
-                    btn.textContent = "Confirm & Place Local Order ✨";
+                    cart.push(item);
+                    updateCartUI();
+                    closeModal();
+                    orderForm.reset();
+                    toggleCart();
                 });
             }
 
@@ -549,6 +606,116 @@
                 });
             }
         });
+
+        function updateAuthButtonUI() {
+            const navBtn = document.getElementById('nav-auth-btn');
+            const mobileBtn = document.getElementById('mobile-auth-btn');
+            if (currentUser) {
+                if (navBtn) navBtn.textContent = "Dashboard 👤";
+                if (mobileBtn) mobileBtn.textContent = "Dashboard 👤";
+            }
+        }
+
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            currentUser = null;
+            cart = [];
+            updateCartUI();
+            toggleDashboard();
+            const navBtn = document.getElementById('nav-auth-btn');
+            const mobileBtn = document.getElementById('mobile-auth-btn');
+            if (navBtn) navBtn.textContent = "Log In";
+            if (mobileBtn) mobileBtn.textContent = "Log In / Sign Up";
+            switchPage('home');
+        }
+
+        // Cart Management Functions
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const subtotalElem = document.getElementById('cart-subtotal');
+            const badge = document.getElementById('cart-badge');
+            
+            badge.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-gray-400 text-center py-12 text-sm">Your cart is empty.</p>`;
+                subtotalElem.textContent = `₹0`;
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = cart.map((item, index) => {
+                total += item.price * item.quantity;
+                return `
+                    <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-sm">${item.item_name}</h4>
+                            <p class="text-xs text-gray-500">To: ${item.recipient_name} • ₹${item.price}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-red-500 text-xs font-semibold hover:underline">Remove</button>
+                    </div>
+                `;
+            }).join('');
+            subtotalElem.textContent = `₹${total}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        async function proceedToCheckout() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            if (!currentUser) {
+                alert("Please log in to complete your checkout.");
+                switchPage('auth');
+                toggleCart();
+                return;
+            }
+
+            try {
+                for (const item of cart) {
+                    await fetch(`${RENDER_BACKEND_URL}/api/orders`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(item)
+                    });
+                }
+                alert("All orders placed successfully! Express local delivery initiated 🚀");
+                cart = [];
+                updateCartUI();
+                toggleCart();
+            } catch (err) {
+                alert("Checkout failed due to network error.");
+            }
+        }
+
+        async function fetchUserOrders(email) {
+            const container = document.getElementById('dashboard-orders-list');
+            try {
+                const response = await fetch(`${RENDER_BACKEND_URL}/api/orders?email=${email}`);
+                const result = await response.json();
+                
+                if (result.data && result.data.length > 0) {
+                    container.innerHTML = result.data.map(order => `
+                        <div class="p-4 border border-gray-100 rounded-2xl bg-gray-50 flex justify-between items-center">
+                            <div>
+                                <p class="text-xs font-bold text-gray-900">${order.item_name}</p>
+                                <p class="text-[11px] text-gray-500">Recipient: ${order.recipient_name} • ₹${order.price}</p>
+                            </div>
+                            <span class="text-[10px] px-2.5 py-1 bg-green-100 text-green-700 rounded-full font-bold">${order.status || 'Pending'}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `<p class="text-xs text-gray-400">No past orders found.</p>`;
+                }
+            } catch (err) {
+                container.innerHTML = `<p class="text-xs text-red-500">Failed to load orders.</p>`;
+            }
+        }
 
         // Fetch and Render Products Dynamically
         async function loadProductsCatalog() {
