@@ -39,6 +39,7 @@
                 <button onclick="switchPage('pool-gifting')" class="hover:text-brandPink transition focus:outline-none">Pool Gifting</button>
                 <button onclick="switchPage('corporate')" class="hover:text-brandPink transition focus:outline-none">Corporate</button>
                 <button onclick="switchPage('onboard')" class="hover:text-brandPink transition focus:outline-none">Partner With Us</button>
+                <button onclick="switchPage('partner-dashboard')" class="hover:text-brandPink transition focus:outline-none text-brandPink font-bold">Partner Dashboard</button>
             </nav>
 
             <div class="hidden md:flex items-center space-x-4">
@@ -66,6 +67,7 @@
             <button onclick="switchPage('pool-gifting'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Pool Gifting</button>
             <button onclick="switchPage('corporate'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Corporate</button>
             <button onclick="switchPage('onboard'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Partner With Us</button>
+            <button onclick="switchPage('partner-dashboard'); toggleMobileMenu();" class="block w-full text-left font-bold text-brandPink">Partner Dashboard</button>
             <button onclick="toggleCart(); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Cart 🛒</button>
             <button onclick="handleAuthNavClick(); toggleMobileMenu();" id="mobile-auth-btn" class="block w-full text-left font-semibold text-gray-800 hover:text-brandPink">Log In / Sign Up</button>
             <button onclick="switchPage('catalog'); toggleMobileMenu();" class="w-full bg-brandPink text-white py-3 rounded-xl font-bold text-sm shadow-md text-center block">Start Gifting</button>
@@ -279,6 +281,57 @@
                         </select>
                         <button type="submit" id="onboard-submit-btn" class="w-full bg-brandPink text-white py-4 rounded-xl font-bold text-base hover:bg-pink-700 transition">Submit Partner Application 🚀</button>
                         <p id="onboard-status" class="text-xs text-center font-semibold text-brandPink hidden"></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: PARTNER DASHBOARD (PRODUCT LISTING & UPLOAD) -->
+        <section id="page-partner-dashboard" class="page-view hidden py-20 bg-gray-50 min-h-[80vh]">
+            <div class="max-w-3xl mx-auto px-6">
+                <div class="text-center space-y-3 mb-12">
+                    <span class="text-xs font-bold tracking-widest text-brandPink uppercase bg-brandPink/10 px-3 py-1 rounded-full">Partner Portal</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">List a New Product</h2>
+                    <p class="text-sm text-gray-500">Upload item details and product image to display it live on the catalog.</p>
+                </div>
+                <div class="bg-white p-8 sm:p-12 rounded-3xl shadow-xl border border-gray-100">
+                    <form id="partner-product-form" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold text-gray-700 uppercase">Store Name</label>
+                                <input type="text" id="p-store-name" placeholder="e.g., Artisan Print & Engrave" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold text-gray-700 uppercase">Item Name</label>
+                                <input type="text" id="p-item-name" placeholder="e.g., Custom Photo Lamp" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold text-gray-700 uppercase">Price (₹)</label>
+                                <input type="number" id="p-price" placeholder="499" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold text-gray-700 uppercase">Category</label>
+                                <select id="p-category" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink">
+                                    <option>Personalised Items</option>
+                                    <option>Decor & Lights</option>
+                                    <option>Hampers & Sweets</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-gray-700 uppercase">Description</label>
+                            <textarea id="p-description" rows="3" placeholder="Describe the gift item..." required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink"></textarea>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-gray-700 uppercase">Product Image File</label>
+                            <input type="file" id="p-image-file" accept="image/*" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-brandPink file:text-white hover:file:bg-pink-700">
+                        </div>
+                        <button type="submit" id="p-submit-btn" class="w-full bg-brandPink text-white py-4 rounded-xl font-bold text-base hover:bg-pink-700 transition shadow-lg">
+                            Publish Product to Catalog 🚀
+                        </button>
+                        <p id="p-status" class="text-xs text-center font-semibold text-brandPink hidden"></p>
                     </form>
                 </div>
             </div>
@@ -521,6 +574,7 @@
                         delivery_address: document.getElementById("delivery-address").value,
                         gift_message: document.getElementById("gift-message").value,
                         sender_name: document.getElementById("sender-name").value,
+                        sender_email: currentUser ? currentUser.email : "",
                         price: parseFloat(document.getElementById("modal-price-input").value),
                         quantity: 1
                     };
@@ -530,6 +584,49 @@
                     closeModal();
                     orderForm.reset();
                     toggleCart();
+                });
+            }
+
+            // Partner Product Listing Form Handler
+            const partnerProductForm = document.getElementById("partner-product-form");
+            if (partnerProductForm) {
+                partnerProductForm.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const btn = document.getElementById("p-submit-btn");
+                    const status = document.getElementById("p-status");
+                    btn.textContent = "Uploading & Publishing...";
+
+                    const formData = new FormData();
+                    formData.append("store_name", document.getElementById("p-store-name").value);
+                    formData.append("item_name", document.getElementById("p-item-name").value);
+                    formData.append("description", document.getElementById("p-description").value);
+                    formData.append("price", document.getElementById("p-price").value);
+                    formData.append("category", document.getElementById("p-category").value);
+                    formData.append("file", document.getElementById("p-image-file").files[0]);
+
+                    try {
+                        const response = await fetch(`${RENDER_BACKEND_URL}/api/partner/products`, {
+                            method: "POST",
+                            body: formData
+                        });
+                        const result = await response.json();
+                        status.classList.remove("hidden");
+                        if (response.ok) {
+                            status.textContent = "Product published successfully! 🎉";
+                            partnerProductForm.reset();
+                            setTimeout(() => {
+                                status.classList.add("hidden");
+                                switchPage('catalog');
+                                loadProductsCatalog();
+                            }, 2000);
+                        } else {
+                            status.textContent = "Error: " + (result.detail || "Failed to list product.");
+                        }
+                    } catch (err) {
+                        status.classList.remove("hidden");
+                        status.textContent = "Network error connecting to backend.";
+                    }
+                    btn.textContent = "Publish Product to Catalog 🚀";
                 });
             }
 
