@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Supabase JS Client CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Razorpay Checkout SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -507,7 +509,7 @@
             }
         }
 
-        // Partner Nav Click Handler (Checks if logged in as partner)
+        // Partner Nav Click Handler
         function handlePartnerNavClick() {
             if (currentPartner) {
                 switchPage('partner-dashboard');
@@ -523,7 +525,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
-            // Check active session on load
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (session) {
                 currentUser = session.user;
@@ -844,39 +845,80 @@
             updateCartUI();
         }
 
+        // --- Razorpay Payment Checkout Integration ---
         async function proceedToCheckout() {
-    if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
-    }
-    if (!currentUser) {
-        alert("Please log in to complete your checkout.");
-        switchPage('auth');
-        toggleCart();
-        return;
-    }
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            if (!currentUser) {
+                alert("Please log in to complete your checkout.");
+                switchPage('auth');
+                toggleCart();
+                return;
+            }
 
-    try {
-        for (const item of cart) {
-            const response = await fetch(`${RENDER_BACKEND_URL}/api/orders`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(item)
-            });
-            const result = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(result.detail || "Failed to place order for " + item.item_name);
+            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            try {
+                // 1. Create Razorpay Payment Order on Backend
+                const orderRes = await fetch(`${RENDER_BACKEND_URL}/api/create-payment-order`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ amount: totalAmount })
+                });
+                const orderData = await orderRes.json();
+                
+                if (!orderRes.ok) {
+                    throw new Error(orderData.detail || "Failed to initialize payment gateway.");
+                }
+
+                // 2. Open Razorpay Checkout Modal
+                const options = {
+                    "key": orderData.key_id,
+                    "amount": orderData.amount,
+                    "currency": "INR",
+                    "name": "Tokens Gifting Platform",
+                    "description": "Express Local Delivery Order",
+                    "order_id": orderData.order_id,
+                    "handler": async function (response) {
+                        // 3. Payment Successful -> Save items to Supabase orders table
+                        try {
+                            for (const item of cart) {
+                                const saveRes = await fetch(`${RENDER_BACKEND_URL}/api/orders`, {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify(item)
+                                });
+                                const saveResult = await saveRes.json();
+                                if (!saveRes.ok) {
+                                    throw new Error(saveResult.detail || "Failed to save order item.");
+                                }
+                            }
+                            alert("Payment successful! 🎉 Order placed. Payment ID: " + response.razorpay_payment_id);
+                            cart = [];
+                            updateCartUI();
+                            toggleCart();
+                        } catch (saveErr) {
+                            alert("Payment received, but error saving order to database: " + saveErr.message);
+                        }
+                    },
+                    "prefill": {
+                        "email": currentUser.email
+                    },
+                    "theme": {
+                        "color": "#db2777"
+                    }
+                };
+
+                const rzp = new Razorpay(options);
+                rzp.open();
+
+            } catch (err) {
+                alert("Checkout failed: " + err.message);
             }
         }
-        alert("All orders placed successfully! Express local delivery initiated 🚀");
-        cart = [];
-        updateCartUI();
-        toggleCart();
-    } catch (err) {
-        alert("Checkout failed: " + err.message);
-    }
-}
+
         async function fetchUserOrders(email) {
             const container = document.getElementById('dashboard-orders-list');
             try {
