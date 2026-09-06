@@ -845,34 +845,38 @@
         }
 
         async function proceedToCheckout() {
-            if (cart.length === 0) {
-                alert("Your cart is empty!");
-                return;
-            }
-            if (!currentUser) {
-                alert("Please log in to complete your checkout.");
-                switchPage('auth');
-                toggleCart();
-                return;
-            }
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+    if (!currentUser) {
+        alert("Please log in to complete your checkout.");
+        switchPage('auth');
+        toggleCart();
+        return;
+    }
 
-            try {
-                for (const item of cart) {
-                    await fetch(`${RENDER_BACKEND_URL}/api/orders`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(item)
-                    });
-                }
-                alert("All orders placed successfully! Express local delivery initiated 🚀");
-                cart = [];
-                updateCartUI();
-                toggleCart();
-            } catch (err) {
-                alert("Checkout failed due to network error.");
+    try {
+        for (const item of cart) {
+            const response = await fetch(`${RENDER_BACKEND_URL}/api/orders`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(item)
+            });
+            const result = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(result.detail || "Failed to place order for " + item.item_name);
             }
         }
-
+        alert("All orders placed successfully! Express local delivery initiated 🚀");
+        cart = [];
+        updateCartUI();
+        toggleCart();
+    } catch (err) {
+        alert("Checkout failed: " + err.message);
+    }
+}
         async function fetchUserOrders(email) {
             const container = document.getElementById('dashboard-orders-list');
             try {
@@ -955,9 +959,3 @@
 </body>
 </html>
 
-git init
-git add .
-git commit -m "Tokens frontend ready for partner dashboard"
-git branch -M main
-git remote add origin https://github.com/Akgstories/tokens-frontend.git
-git push -u origin main
