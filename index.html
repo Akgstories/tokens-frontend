@@ -406,9 +406,9 @@
         </div>
     </div>
 
-    <!-- Personalization Modal -->
-    <div id="personalization-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-8 relative space-y-6 shadow-2xl">
+    <!-- Personalization Modal (Enhanced with Bottom Padding for Mobile Keyboards) -->
+    <div id="personalization-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-8 relative space-y-6 shadow-2xl my-8 pb-28">
             <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 font-bold text-xl">✕</button>
             <div>
                 <span class="text-xs font-bold text-brandPink uppercase tracking-wider">Deep Personalization</span>
@@ -845,7 +845,7 @@
             updateCartUI();
         }
 
-        // --- Razorpay Payment Checkout Integration ---
+        // --- Secured Razorpay Payment Checkout Integration ---
         async function proceedToCheckout() {
             if (cart.length === 0) {
                 alert("Your cart is empty!");
@@ -882,8 +882,23 @@
                     "description": "Express Local Delivery Order",
                     "order_id": orderData.order_id,
                     "handler": async function (response) {
-                        // 3. Payment Successful -> Save items to Supabase orders table
                         try {
+                            // 3. Verify Payment Signature on Backend
+                            const verifyRes = await fetch(`${RENDER_BACKEND_URL}/api/verify-payment`, {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature
+                                })
+                            });
+                            const verifyData = await verifyRes.json();
+                            if (!verifyRes.ok || !verifyData.success) {
+                                throw new Error("Payment signature verification failed.");
+                            }
+
+                            // 4. Save items to Supabase orders table only after secure verification
                             for (const item of cart) {
                                 const saveRes = await fetch(`${RENDER_BACKEND_URL}/api/orders`, {
                                     method: "POST",
@@ -895,12 +910,12 @@
                                     throw new Error(saveResult.detail || "Failed to save order item.");
                                 }
                             }
-                            alert("Payment successful! 🎉 Order placed. Payment ID: " + response.razorpay_payment_id);
+                            alert("Payment verified successfully! 🎉 Order placed. Payment ID: " + response.razorpay_payment_id);
                             cart = [];
                             updateCartUI();
                             toggleCart();
                         } catch (saveErr) {
-                            alert("Payment received, but error saving order to database: " + saveErr.message);
+                            alert("Checkout processing error: " + saveErr.message);
                         }
                     },
                     "prefill": {
@@ -1000,4 +1015,3 @@
     </script>
 </body>
 </html>
-
