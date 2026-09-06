@@ -39,7 +39,7 @@
                 <button onclick="switchPage('pool-gifting')" class="hover:text-brandPink transition focus:outline-none">Pool Gifting</button>
                 <button onclick="switchPage('corporate')" class="hover:text-brandPink transition focus:outline-none">Corporate</button>
                 <button onclick="switchPage('onboard')" class="hover:text-brandPink transition focus:outline-none">Partner With Us</button>
-                <button onclick="switchPage('partner-dashboard')" class="hover:text-brandPink transition focus:outline-none text-brandPink font-bold">Partner Dashboard</button>
+                <button onclick="handlePartnerNavClick()" class="hover:text-brandPink transition focus:outline-none text-brandPink font-bold" id="partner-nav-btn">Partner Portal</button>
             </nav>
 
             <div class="hidden md:flex items-center space-x-4">
@@ -67,7 +67,7 @@
             <button onclick="switchPage('pool-gifting'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Pool Gifting</button>
             <button onclick="switchPage('corporate'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Corporate</button>
             <button onclick="switchPage('onboard'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Partner With Us</button>
-            <button onclick="switchPage('partner-dashboard'); toggleMobileMenu();" class="block w-full text-left font-bold text-brandPink">Partner Dashboard</button>
+            <button onclick="handlePartnerNavClick(); toggleMobileMenu();" class="block w-full text-left font-bold text-brandPink">Partner Portal</button>
             <button onclick="toggleCart(); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Cart 🛒</button>
             <button onclick="handleAuthNavClick(); toggleMobileMenu();" id="mobile-auth-btn" class="block w-full text-left font-semibold text-gray-800 hover:text-brandPink">Log In / Sign Up</button>
             <button onclick="switchPage('catalog'); toggleMobileMenu();" class="w-full bg-brandPink text-white py-3 rounded-xl font-bold text-sm shadow-md text-center block">Start Gifting</button>
@@ -172,6 +172,28 @@
                     </button>
 
                     <p id="authMessage" class="text-xs font-semibold text-center"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: PARTNER LOGIN -->
+        <section id="page-partner-login" class="page-view hidden py-20 bg-gray-50 min-h-[80vh] flex items-center justify-center">
+            <div class="max-w-md w-full px-6">
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 space-y-6 text-center">
+                    <div>
+                        <span class="text-xs font-bold tracking-widest text-brandPink uppercase bg-brandPink/10 px-3 py-1 rounded-full">Partner Portal</span>
+                        <h2 class="text-3xl font-black text-gray-900 mt-3">Partner Login</h2>
+                        <p class="text-sm text-gray-500 mt-1">Enter your unique Partner ID to manage your store catalog</p>
+                    </div>
+                    
+                    <form id="partner-login-form" class="space-y-4 text-left">
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-gray-700 uppercase">Partner ID</label>
+                            <input type="text" id="login-partner-id" placeholder="e.g. 4a82b1" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink" />
+                        </div>
+                        <button type="submit" id="partner-login-btn" class="w-full bg-brandPink text-white py-3.5 rounded-xl font-bold text-sm shadow-md hover:bg-pink-700 transition">Log In to Dashboard</button>
+                        <p id="partner-login-msg" class="text-xs font-semibold text-center"></p>
+                    </form>
                 </div>
             </div>
         </section>
@@ -289,17 +311,19 @@
         <!-- PAGE: PARTNER DASHBOARD (PRODUCT LISTING & UPLOAD) -->
         <section id="page-partner-dashboard" class="page-view hidden py-20 bg-gray-50 min-h-[80vh]">
             <div class="max-w-3xl mx-auto px-6">
-                <div class="text-center space-y-3 mb-12">
-                    <span class="text-xs font-bold tracking-widest text-brandPink uppercase bg-brandPink/10 px-3 py-1 rounded-full">Partner Portal</span>
-                    <h2 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">List a New Product</h2>
-                    <p class="text-sm text-gray-500">Upload item details and product image to display it live on the catalog.</p>
+                <div class="text-center space-y-3 mb-12 flex justify-between items-center">
+                    <div>
+                        <span class="text-xs font-bold tracking-widest text-brandPink uppercase bg-brandPink/10 px-3 py-1 rounded-full">Partner Portal</span>
+                        <h2 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mt-2">Manage Store Products</h2>
+                    </div>
+                    <button onclick="handlePartnerLogout()" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-red-100 transition">Log Out Partner</button>
                 </div>
                 <div class="bg-white p-8 sm:p-12 rounded-3xl shadow-xl border border-gray-100">
                     <form id="partner-product-form" class="space-y-6">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-700 uppercase">Store Name</label>
-                                <input type="text" id="p-store-name" placeholder="e.g., Artisan Print & Engrave" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink">
+                                <label class="text-xs font-bold text-gray-700 uppercase">Store Name (Locked)</label>
+                                <input type="text" id="p-store-name" readonly class="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-500 cursor-not-allowed">
                             </div>
                             <div class="space-y-1">
                                 <label class="text-xs font-bold text-gray-700 uppercase">Item Name</label>
@@ -437,6 +461,7 @@
 
         let cart = [];
         let currentUser = null;
+        let currentPartner = null;
 
         // Page Router Function
         function switchPage(pageId) {
@@ -480,6 +505,21 @@
             } else {
                 switchPage('auth');
             }
+        }
+
+        // Partner Nav Click Handler (Checks if logged in as partner)
+        function handlePartnerNavClick() {
+            if (currentPartner) {
+                switchPage('partner-dashboard');
+            } else {
+                switchPage('partner-login');
+            }
+        }
+
+        function handlePartnerLogout() {
+            currentPartner = null;
+            alert("Logged out of partner session.");
+            switchPage('home');
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
@@ -561,6 +601,41 @@
                 });
             }
 
+            // Partner Login Form Handler
+            const partnerLoginForm = document.getElementById("partner-login-form");
+            if (partnerLoginForm) {
+                partnerLoginForm.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const partnerId = document.getElementById("login-partner-id").value;
+                    const msg = document.getElementById("partner-login-msg");
+                    msg.textContent = "Authenticating partner...";
+
+                    try {
+                        const response = await fetch(`${RENDER_BACKEND_URL}/api/partner/login`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ partner_id: partnerId })
+                        });
+                        const result = await response.json();
+
+                        if (response.ok) {
+                            currentPartner = { partner_id: result.partner_id, store_name: result.store_name };
+                            msg.style.color = "#16a34a";
+                            msg.textContent = `Welcome back, ${result.store_name}! Redirecting...`;
+                            
+                            document.getElementById("p-store-name").value = result.store_name;
+                            setTimeout(() => switchPage('partner-dashboard'), 1000);
+                        } else {
+                            msg.style.color = "#dc2626";
+                            msg.textContent = result.detail || "Login failed.";
+                        }
+                    } catch (err) {
+                        msg.style.color = "#dc2626";
+                        msg.textContent = "Network error connecting to backend.";
+                    }
+                });
+            }
+
             // Order / Personalization Form Handler
             const orderForm = document.getElementById("order-form");
             if (orderForm) {
@@ -592,12 +667,19 @@
             if (partnerProductForm) {
                 partnerProductForm.addEventListener("submit", async (e) => {
                     e.preventDefault();
+                    if (!currentPartner) {
+                        alert("Please log in with your Partner ID first!");
+                        switchPage('partner-login');
+                        return;
+                    }
+
                     const btn = document.getElementById("p-submit-btn");
                     const status = document.getElementById("p-status");
                     btn.textContent = "Uploading & Publishing...";
 
                     const formData = new FormData();
-                    formData.append("store_name", document.getElementById("p-store-name").value);
+                    formData.append("partner_id", currentPartner.partner_id);
+                    formData.append("store_name", currentPartner.store_name);
                     formData.append("item_name", document.getElementById("p-item-name").value);
                     formData.append("description", document.getElementById("p-description").value);
                     formData.append("price", document.getElementById("p-price").value);
@@ -612,8 +694,9 @@
                         const result = await response.json();
                         status.classList.remove("hidden");
                         if (response.ok) {
-                            status.textContent = "Product published successfully! 🎉";
+                            status.textContent = "Product published successfully under your store! 🎉";
                             partnerProductForm.reset();
+                            document.getElementById("p-store-name").value = currentPartner.store_name;
                             setTimeout(() => {
                                 status.classList.add("hidden");
                                 switchPage('catalog');
@@ -871,3 +954,10 @@
     </script>
 </body>
 </html>
+
+git init
+git add .
+git commit -m "Tokens frontend ready for partner dashboard"
+git branch -M main
+git remote add origin https://github.com/Akgstories/tokens-frontend.git
+git push -u origin main
