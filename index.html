@@ -486,6 +486,11 @@
         const SUPABASE_ANON_KEY = "sb_publishable_K1MGEBgEhHL50VGjS5pipQ_JJfWFDhc";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // Smart Redirect URL helper for live vs local environment
+        const SITE_URL = window.location.hostname.includes('127.0.0.1') || window.location.hostname.includes('localhost') 
+            ? window.location.origin 
+            : 'https://tokensforeveryone.in';
+
         let cart = [];
         let currentUser = null;
         let currentPartner = null;
@@ -620,6 +625,7 @@
                         email: emailInput.value,
                         password: passwordInput.value,
                         options: {
+                            emailRedirectTo: SITE_URL,
                             data: {
                                 display_name: fullName,
                                 full_name: fullName
@@ -643,7 +649,7 @@
                 googleLoginBtn.addEventListener('click', async () => {
                     await supabaseClient.auth.signInWithOAuth({
                         provider: 'google',
-                        options: { redirectTo: window.location.origin }
+                        options: { redirectTo: SITE_URL }
                     });
                 });
             }
