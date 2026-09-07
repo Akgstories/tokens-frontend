@@ -410,7 +410,7 @@
             <button onclick="toggleDashboard()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 font-bold text-xl">✕</button>
             <div>
                 <span class="text-xs font-bold text-brandPink uppercase tracking-wider">Account Portal</span>
-                <h3 class="text-2xl font-black text-gray-900 mt-1">User Dashboard</h3>
+                <h3 class="text-2xl font-black text-gray-900 mt-1" id="dashboard-user-name-heading">User Dashboard</h3>
                 <p id="dashboard-user-email" class="text-xs text-gray-500 font-semibold mt-0.5">-</p>
             </div>
 
@@ -533,6 +533,13 @@
                 const savedName = metadata.display_name || metadata.full_name || "";
                 document.getElementById('user-display-name-input').value = savedName;
 
+                const nameHeading = document.getElementById('dashboard-user-name-heading');
+                if (savedName) {
+                    nameHeading.textContent = `Hello, ${savedName}! 👋`;
+                } else {
+                    nameHeading.textContent = `User Dashboard`;
+                }
+
                 fetchUserOrders(currentUser.email);
             }
         }
@@ -555,6 +562,8 @@
                 if (error) throw error;
 
                 currentUser = data.user;
+                document.getElementById('dashboard-user-name-heading').textContent = `Hello, ${newName}! 👋`;
+
                 statusElem.classList.remove('hidden');
                 setTimeout(() => {
                     statusElem.classList.add('hidden');
