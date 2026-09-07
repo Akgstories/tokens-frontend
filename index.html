@@ -920,7 +920,10 @@
                                 });
                                 const saveResult = await saveRes.json();
                                 if (!saveRes.ok) {
-                                    throw new Error(saveResult.detail || "Failed to save order item.");
+                                    const errMsg = typeof saveResult.detail === 'object' 
+                                        ? JSON.stringify(saveResult.detail) 
+                                        : (saveResult.detail || "Failed to save order item.");
+                                    throw new Error(errMsg);
                                 }
                             }
                             alert("Payment verified successfully! 🎉 Order placed. Payment ID: " + response.razorpay_payment_id);
@@ -950,7 +953,7 @@
         async function fetchUserOrders(email) {
             const container = document.getElementById('dashboard-orders-list');
             try {
-                const response = await fetch(`${RENDER_BACKEND_URL}/api/orders?email=${email}`);
+                const response = await fetch(`${RENDER_BACKEND_URL}/api/orders?email=${encodeURIComponent(email)}`);
                 const result = await response.json();
                 
                 if (result.data && result.data.length > 0) {
@@ -1082,4 +1085,3 @@
     </script>
 </body>
 </html>
-
