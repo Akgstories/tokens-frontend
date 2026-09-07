@@ -413,9 +413,20 @@
                 <h3 class="text-2xl font-black text-gray-900 mt-1">User Dashboard</h3>
                 <p id="dashboard-user-email" class="text-xs text-gray-500 font-semibold mt-0.5">-</p>
             </div>
+
+            <!-- Display Name Setting Box -->
+            <div class="space-y-2 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                <label class="text-xs font-bold text-gray-700 uppercase">Your Display Name</label>
+                <div class="flex gap-2">
+                    <input type="text" id="user-display-name-input" placeholder="e.g. Aditya Kumar" class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-brandPink" />
+                    <button onclick="saveDisplayName()" class="bg-brandPink text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-pink-700 transition">Save</button>
+                </div>
+                <p id="profile-update-status" class="text-[11px] font-semibold text-green-600 hidden">Display name updated successfully!</p>
+            </div>
+
             <div>
                 <h4 class="font-bold text-gray-800 text-sm mb-3">Your Recent Orders</h4>
-                <div id="dashboard-orders-list" class="space-y-3 max-h-60 overflow-y-auto pr-1">
+                <div id="dashboard-orders-list" class="space-y-3 max-h-48 overflow-y-auto pr-1">
                     <p class="text-xs text-gray-400">Loading orders...</p>
                 </div>
             </div>
@@ -509,14 +520,47 @@
             drawer.classList.toggle('translate-x-full');
         }
 
-        // Dashboard Modal Toggle
+        // Dashboard Modal Toggle & Metadata Loading
         async function toggleDashboard() {
             const modal = document.getElementById('dashboard-modal');
             modal.classList.toggle('hidden');
             
             if (!modal.classList.contains('hidden') && currentUser) {
                 document.getElementById('dashboard-user-email').textContent = currentUser.email;
+                
+                // Load existing display name if saved
+                const metadata = currentUser.user_metadata || {};
+                const savedName = metadata.display_name || metadata.full_name || "";
+                document.getElementById('user-display-name-input').value = savedName;
+
                 fetchUserOrders(currentUser.email);
+            }
+        }
+
+        // Save Display Name to Supabase User Metadata
+        async function saveDisplayName() {
+            const newName = document.getElementById('user-display-name-input').value.trim();
+            const statusElem = document.getElementById('profile-update-status');
+            
+            if (!newName) {
+                alert("Please enter a valid display name.");
+                return;
+            }
+
+            try {
+                const { data, error } = await supabaseClient.auth.updateUser({
+                    data: { display_name: newName }
+                });
+
+                if (error) throw error;
+
+                currentUser = data.user;
+                statusElem.classList.remove('hidden');
+                setTimeout(() => {
+                    statusElem.classList.add('hidden');
+                }, 3000);
+            } catch (err) {
+                alert("Failed to update display name: " + err.message);
             }
         }
 
@@ -1104,7 +1148,7 @@
             }
         }
 
-        // Modal Controls
+        // Modal Controls with Default Sender Name Pre-fill
         function openPersonalizationModal(id, store, name, price) {
             document.getElementById("modal-product-id").value = id;
             document.getElementById("modal-store-input").value = store;
@@ -1114,6 +1158,14 @@
             document.getElementById("modal-product-title").textContent = name;
             document.getElementById("modal-store-name").textContent = `Partner: ${store} • ₹${price}`;
             
+            if (currentUser && currentUser.user_metadata) {
+                const defaultName = currentUser.user_metadata.display_name || currentUser.user_metadata.full_name || "";
+                const senderInput = document.getElementById("sender-name");
+                if (senderInput && defaultName) {
+                    senderInput.value = defaultName;
+                }
+            }
+
             document.getElementById("personalization-modal").classList.remove("hidden");
         }
 
