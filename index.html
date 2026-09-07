@@ -232,11 +232,19 @@
         <!-- PAGE: SHOP GIFTS (CATALOG) -->
         <section id="page-catalog" class="page-view hidden py-20 bg-white min-h-[80vh]">
             <div class="max-w-7xl mx-auto px-6">
-                <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
                     <span class="text-xs font-bold tracking-widest text-brandPink uppercase bg-brandPink/10 px-3 py-1 rounded-full">Partner Storefronts</span>
                     <h2 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">Curated Gifts Ready for Fast Delivery</h2>
                     <p class="text-gray-600 text-base">Choose an item from our verified local partner shops, add your personal touch, and have it delivered instantly.</p>
                 </div>
+
+                <!-- Category Filter Tabs -->
+                <div class="flex justify-center items-center gap-3 mb-12 flex-wrap">
+                    <button onclick="filterCatalog('all')" id="filter-all" class="px-5 py-2.5 rounded-full text-xs font-bold bg-brandPink text-white shadow-md transition">All Gifts</button>
+                    <button onclick="filterCatalog('Personalized')" id="filter-personalized" class="px-5 py-2.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition">✨ Personalized Gifting</button>
+                    <button onclick="filterCatalog('General')" id="filter-general" class="px-5 py-2.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition">🎁 General Gifting</button>
+                </div>
+
                 <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="text-center py-12 col-span-3 text-gray-400">Loading live items from partner stores...</div>
                 </div>
@@ -344,9 +352,8 @@
                             <div class="space-y-1">
                                 <label class="text-xs font-bold text-gray-700 uppercase">Category</label>
                                 <select id="p-category" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink">
-                                    <option>Personalised Items</option>
-                                    <option>Decor & Lights</option>
-                                    <option>Hampers & Sweets</option>
+                                    <option value="Personalized">Personalized Gifting</option>
+                                    <option value="General">General Gifting</option>
                                 </select>
                             </div>
                         </div>
@@ -476,6 +483,7 @@
         let cart = [];
         let currentUser = null;
         let currentPartner = null;
+        let allProducts = []; // Global store for catalog items
 
         // Page Router Function
         function switchPage(pageId) {
@@ -1028,7 +1036,7 @@
             }
         }
 
-        // Fetch and Render Products Dynamically
+        // Fetch and Render Products Dynamically with Filtering Support
         async function loadProductsCatalog() {
             const grid = document.getElementById("product-grid");
             try {
@@ -1036,33 +1044,63 @@
                 const result = await response.json();
                 
                 if (response.ok && result.data && result.data.length > 0) {
-                    grid.innerHTML = "";
-                    result.data.forEach(prod => {
-                        const card = `
-                            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl transition flex flex-col justify-between group">
-                                <div>
-                                    <img src="${prod.image_url || 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=500'}" alt="${prod.item_name}" class="w-full h-48 object-cover rounded-2xl mb-4">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="bg-pink-50 text-brandPink font-bold text-xs px-3 py-1 rounded-lg">${prod.store_name}</span>
-                                        <span class="text-xs text-green-600 font-semibold bg-green-50 px-2.5 py-1 rounded-lg">⚡ Fast Local Delivery</span>
-                                    </div>
-                                    <h3 class="text-xl font-bold text-gray-900 group-hover:text-brandPink transition mt-2">${prod.item_name}</h3>
-                                    <p class="text-sm text-gray-500 mt-2 mb-6">${prod.description || 'Curated boutique gift item.'}</p>
-                                </div>
-                                <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                                    <span class="text-lg font-black text-gray-900">₹${prod.price}</span>
-                                    <button onclick="openPersonalizationModal('${prod.id}', '${prod.store_name}', '${prod.item_name}', ${prod.price})" class="bg-brandPink text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-pink-700 transition">
-                                        Customize & Send ✨
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                        grid.innerHTML += card;
-                    });
+                    allProducts = result.data;
+                    renderProducts(allProducts);
                 }
             } catch (err) {
                 console.error("Failed to load catalog:", err);
                 grid.innerHTML = `<div class="text-center py-12 col-span-3 text-red-500">Could not connect to backend server to load catalog.</div>`;
+            }
+        }
+
+        // Render Products Grid Helper
+        function renderProducts(productsToRender) {
+            const grid = document.getElementById("product-grid");
+            if (productsToRender.length === 0) {
+                grid.innerHTML = `<div class="text-center py-12 col-span-3 text-gray-400">No products found in this category.</div>`;
+                return;
+            }
+
+            grid.innerHTML = productsToRender.map(prod => `
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl transition flex flex-col justify-between group">
+                    <div>
+                        <img src="${prod.image_url || 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=500'}" alt="${prod.item_name}" class="w-full h-48 object-cover rounded-2xl mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-pink-50 text-brandPink font-bold text-xs px-3 py-1 rounded-lg">${prod.store_name}</span>
+                            <span class="text-xs text-green-600 font-semibold bg-green-50 px-2.5 py-1 rounded-lg">⚡ Fast Local Delivery</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 group-hover:text-brandPink transition mt-2">${prod.item_name}</h3>
+                        <p class="text-sm text-gray-500 mt-2 mb-6">${prod.description || 'Curated boutique gift item.'}</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                        <span class="text-lg font-black text-gray-900">₹${prod.price}</span>
+                        <button onclick="openPersonalizationModal('${prod.id}', '${prod.store_name}', '${prod.item_name}', ${prod.price})" class="bg-brandPink text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-pink-700 transition">
+                            Customize & Send ✨
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter Catalog Function
+        function filterCatalog(categoryType) {
+            ['all', 'personalized', 'general'].forEach(type => {
+                const btn = document.getElementById(`filter-${type}`);
+                if (btn) {
+                    btn.className = "px-5 py-2.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition";
+                }
+            });
+
+            const activeBtn = document.getElementById(`filter-${categoryType.toLowerCase()}`);
+            if (activeBtn) {
+                activeBtn.className = "px-5 py-2.5 rounded-full text-xs font-bold bg-brandPink text-white shadow-md transition";
+            }
+
+            if (categoryType === 'all') {
+                renderProducts(allProducts);
+            } else {
+                const filtered = allProducts.filter(p => p.category && p.category.toLowerCase().includes(categoryType.toLowerCase()));
+                renderProducts(filtered);
             }
         }
 
