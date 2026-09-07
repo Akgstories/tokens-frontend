@@ -142,6 +142,11 @@
                     </div>
                     
                     <form id="authForm" class="space-y-4 text-left">
+                        <!-- Full Name Input for Sign Up -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-gray-700 uppercase">Full Name (For Sign Up)</label>
+                            <input type="text" id="signup-name" placeholder="Aditya Kumar" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink" />
+                        </div>
                         <div class="space-y-1">
                             <label class="text-xs font-bold text-gray-700 uppercase">Email Address</label>
                             <input type="email" id="email" placeholder="name@example.com" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink" />
@@ -404,7 +409,7 @@
         </div>
     </div>
 
-    <!-- User Dashboard Modal -->
+    <!-- User Dashboard Modal (Display Name box removed) -->
     <div id="dashboard-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-lg w-full p-8 relative space-y-6 shadow-2xl">
             <button onclick="toggleDashboard()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 font-bold text-xl">✕</button>
@@ -412,16 +417,6 @@
                 <span class="text-xs font-bold text-brandPink uppercase tracking-wider">Account Portal</span>
                 <h3 class="text-2xl font-black text-gray-900 mt-1" id="dashboard-user-name-heading">User Dashboard</h3>
                 <p id="dashboard-user-email" class="text-xs text-gray-500 font-semibold mt-0.5">-</p>
-            </div>
-
-            <!-- Display Name Setting Box -->
-            <div class="space-y-2 bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                <label class="text-xs font-bold text-gray-700 uppercase">Your Display Name</label>
-                <div class="flex gap-2">
-                    <input type="text" id="user-display-name-input" placeholder="e.g. Aditya Kumar" class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-brandPink" />
-                    <button onclick="saveDisplayName()" class="bg-brandPink text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-pink-700 transition">Save</button>
-                </div>
-                <p id="profile-update-status" class="text-[11px] font-semibold text-green-600 hidden">Display name updated successfully!</p>
             </div>
 
             <div>
@@ -528,10 +523,8 @@
             if (!modal.classList.contains('hidden') && currentUser) {
                 document.getElementById('dashboard-user-email').textContent = currentUser.email;
                 
-                // Load existing display name if saved
                 const metadata = currentUser.user_metadata || {};
                 const savedName = metadata.display_name || metadata.full_name || "";
-                document.getElementById('user-display-name-input').value = savedName;
 
                 const nameHeading = document.getElementById('dashboard-user-name-heading');
                 if (savedName) {
@@ -541,35 +534,6 @@
                 }
 
                 fetchUserOrders(currentUser.email);
-            }
-        }
-
-        // Save Display Name to Supabase User Metadata
-        async function saveDisplayName() {
-            const newName = document.getElementById('user-display-name-input').value.trim();
-            const statusElem = document.getElementById('profile-update-status');
-            
-            if (!newName) {
-                alert("Please enter a valid display name.");
-                return;
-            }
-
-            try {
-                const { data, error } = await supabaseClient.auth.updateUser({
-                    data: { display_name: newName }
-                });
-
-                if (error) throw error;
-
-                currentUser = data.user;
-                document.getElementById('dashboard-user-name-heading').textContent = `Hello, ${newName}! 👋`;
-
-                statusElem.classList.remove('hidden');
-                setTimeout(() => {
-                    statusElem.classList.add('hidden');
-                }, 3000);
-            } catch (err) {
-                alert("Failed to update display name: " + err.message);
             }
         }
 
@@ -621,6 +585,7 @@
             const authForm = document.getElementById('authForm');
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
+            const signupNameInput = document.getElementById('signup-name');
             const loginBtn = document.getElementById('loginBtn');
             const signupBtn = document.getElementById('signupBtn');
             const authMessage = document.getElementById('authMessage');
@@ -648,10 +613,18 @@
 
                 signupBtn.addEventListener('click', async (e) => {
                     e.preventDefault();
+                    const fullName = signupNameInput.value.trim();
                     authMessage.textContent = "Creating account...";
+                    
                     const { data, error } = await supabaseClient.auth.signUp({
                         email: emailInput.value,
                         password: passwordInput.value,
+                        options: {
+                            data: {
+                                display_name: fullName,
+                                full_name: fullName
+                            }
+                        }
                     });
 
                     if (error) {
@@ -659,7 +632,7 @@
                         authMessage.textContent = error.message;
                     } else {
                         authMessage.style.color = '#16a34a';
-                        authMessage.textContent = 'Account created! Check your email for verification.';
+                        authMessage.textContent = 'Account created successfully! Check your email for verification.';
                     }
                 });
             }
