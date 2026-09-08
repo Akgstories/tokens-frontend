@@ -500,7 +500,6 @@
         <div class="bg-white rounded-3xl max-w-2xl w-full p-8 relative space-y-6 shadow-2xl max-h-[90vh] flex flex-col">
             <button onclick="toggleDashboard()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-800 font-bold text-xl bg-gray-100 w-9 h-9 rounded-full flex items-center justify-center transition">✕</button>
             
-            <!-- Header Profile Info -->
             <div class="flex items-center space-x-4 border-b border-gray-100 pb-5">
                 <div class="w-14 h-14 bg-brandPink text-white font-black text-2xl rounded-2xl flex items-center justify-center shadow-md shadow-brandPink/20" id="user-avatar-initials">U</div>
                 <div>
@@ -510,7 +509,6 @@
                 </div>
             </div>
 
-            <!-- Dashboard Tabs/Summary Cards -->
             <div class="grid grid-cols-2 gap-4">
                 <div class="bg-brandLightPink/60 p-4 rounded-2xl border border-pink-100 flex items-center space-x-3">
                     <span class="text-2xl">📦</span>
@@ -528,7 +526,6 @@
                 </div>
             </div>
 
-            <!-- Orders Section with Custom Status Badges -->
             <div class="flex-1 overflow-y-auto space-y-3 pr-1">
                 <h4 class="font-bold text-gray-800 text-sm">Order Tracking & History</h4>
                 <div id="dashboard-orders-list" class="space-y-3">
@@ -648,7 +645,6 @@
                 const nameHeading = document.getElementById('dashboard-user-name-heading');
                 nameHeading.textContent = `Hello, ${savedName}! 👋`;
                 
-                // Set Avatar Initials
                 const initials = savedName.charAt(0).toUpperCase();
                 document.getElementById('user-avatar-initials').textContent = initials;
 
@@ -1096,7 +1092,6 @@
             }
         }
 
-        // Improved Order History Rendering with Dynamic Status Badges & UX Messages
         async function fetchUserOrders(email) {
             const container = document.getElementById('dashboard-orders-list');
             const totalOrdersStat = document.getElementById('stat-total-orders');
@@ -1111,7 +1106,6 @@
                     container.innerHTML = result.data.map(order => {
                         const status = (order.status || 'Pending').toLowerCase();
                         
-                        // Status badge color-coding
                         let badgeClass = "bg-amber-100 text-amber-800 border-amber-200";
                         let statusIcon = "⏳";
                         let userMessage = "Order received. Preparing confirmation with local partner.";
@@ -1249,7 +1243,7 @@
                     <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition duration-300 flex flex-col justify-between group overflow-hidden">
                         <div>
                             <div class="overflow-hidden rounded-2xl mb-4">
-                                <img src="${prod.image_url || 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=500'}" alt="${prod.item_name}" class="w-full h-48 object-cover group-hover:scale-105 transition duration-500">
+                                <img src="${prod.image_url || 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=500'}" alt="${prod.item_name}" loading="lazy" class="w-full h-48 object-cover group-hover:scale-105 transition duration-500">
                             </div>
                             <div class="flex items-center justify-between mb-2">
                                 <span class="bg-pink-50 text-brandPink font-bold text-xs px-3 py-1 rounded-lg">${prod.store_name}</span>
