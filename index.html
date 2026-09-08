@@ -237,17 +237,136 @@
         <!-- PAGE: SHOP GIFTS (CATALOG) -->
         <section id="page-catalog" class="page-view hidden py-20 bg-white min-h-[80vh]">
             <div class="max-w-7xl mx-auto px-6">
-                <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-10">
                     <span class="text-xs font-bold tracking-widest text-brandPink uppercase bg-brandPink/10 px-3 py-1 rounded-full">Partner Storefronts</span>
                     <h2 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">Curated Gifts Ready for Fast Delivery</h2>
                     <p class="text-gray-600 text-base">Choose an item from our verified local partner shops, add your personal touch, and have it delivered instantly.</p>
                 </div>
 
                 <!-- Category Filter Tabs -->
-                <div class="flex justify-center items-center gap-3 mb-12 flex-wrap">
+                <div class="flex justify-center items-center gap-3 mb-10 flex-wrap">
                     <button onclick="filterCatalog('all')" id="filter-all" class="px-5 py-2.5 rounded-full text-xs font-bold bg-brandPink text-white shadow-md transition">All Gifts</button>
                     <button onclick="filterCatalog('Personalized')" id="filter-personalized" class="px-5 py-2.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition">✨ Personalized Gifting</button>
                     <button onclick="filterCatalog('General')" id="filter-general" class="px-5 py-2.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition">🎁 General Gifting</button>
+                </div>
+
+                <!-- Personalized Gifting Circular Subcategories Section (Hidden by default, shown only when Personalized Gifting is clicked) -->
+                <div id="personalized-subcategories-section" class="mb-14 hidden">
+                    <h3 class="text-lg font-black text-gray-900 mb-6 px-2">Explore Personalized Gifting Categories</h3>
+                    <div class="flex overflow-x-auto space-x-6 pb-4 scrollbar-thin scrollbar-thumb-gray-200 px-2">
+                        <button onclick="filterBySubcategory('Mug')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-pink-50 border-2 border-pink-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">☕</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Mugs</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Keychain')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-purple-50 border-2 border-purple-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🔑</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Keychains</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Waterbottle')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-50 border-2 border-blue-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🍼</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Waterbottles</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Phone cover')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-yellow-50 border-2 border-yellow-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">📱</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Phone covers</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Light')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-amber-50 border-2 border-amber-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">💡</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Lights</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Table decor')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-teal-50 border-2 border-teal-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🏺</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Table decors</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Photo frame')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-emerald-50 border-2 border-emerald-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🖼️</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Photo frames</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Multi items combo')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-rose-50 border-2 border-rose-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🎁</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Multi items combo</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Wallet')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-indigo-50 border-2 border-indigo-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">💼</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Wallets</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Pendent')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-cyan-50 border-2 border-cyan-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">📿</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Pendents</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Bracelet')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-fuchsia-50 border-2 border-fuchsia-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">✨</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Bracelets</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Dairy')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-lime-50 border-2 border-lime-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">📔</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Dairies</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Card')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-sky-50 border-2 border-sky-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">💌</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Cards</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Miniature model')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-violet-50 border-2 border-violet-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🏰</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Miniature models</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Cushion')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-orange-50 border-2 border-orange-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🛋️</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Cushions</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- General Gifting Circular Subcategories Section (Hidden by default, shown only when General Gifting is clicked) -->
+                <div id="general-subcategories-section" class="mb-14 hidden">
+                    <h3 class="text-lg font-black text-gray-900 mb-6 px-2">Explore General Gifting Categories</h3>
+                    <div class="flex overflow-x-auto space-x-6 pb-4 scrollbar-thin scrollbar-thumb-gray-200 px-2">
+                        <!-- Subcategory Item -->
+                        <button onclick="filterBySubcategory('Keychain')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-pink-50 border-2 border-pink-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🔑</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Keychains</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Watch')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-50 border-2 border-blue-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">⌚</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Watches</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Bracelet')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-purple-50 border-2 border-purple-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">📿</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Bracelets</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Table decor')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-yellow-50 border-2 border-yellow-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🏺</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Table decor</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Desk lamp')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-amber-50 border-2 border-amber-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">💡</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Desk lamps</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Sipper')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-teal-50 border-2 border-teal-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🍼</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Sipper</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Tumbler')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-indigo-50 border-2 border-indigo-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🥤</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Tumbler</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Shaker')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-rose-50 border-2 border-rose-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🍸</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Shaker</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Photo frame')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-emerald-50 border-2 border-emerald-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🖼️</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Photo frames</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Photo')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-cyan-50 border-2 border-cyan-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">📸</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Photos</span>
+                        </button>
+                        <button onclick="filterBySubcategory('Deodrant')" class="flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-fuchsia-50 border-2 border-fuchsia-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">✨</div>
+                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Deodrants & Perfumes</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -1114,7 +1233,7 @@
             `).join('');
         }
 
-        // Filter Catalog Function
+        // Filter Catalog Function & Toggle Subcategories Sections
         function filterCatalog(categoryType) {
             ['all', 'personalized', 'general'].forEach(type => {
                 const btn = document.getElementById(`filter-${type}`);
@@ -1128,12 +1247,35 @@
                 activeBtn.className = "px-5 py-2.5 rounded-full text-xs font-bold bg-brandPink text-white shadow-md transition";
             }
 
+            const personalizedSubSec = document.getElementById("personalized-subcategories-section");
+            const generalSubSec = document.getElementById("general-subcategories-section");
+
+            if (categoryType === 'Personalized') {
+                personalizedSubSec.classList.remove('hidden');
+                generalSubSec.classList.add('hidden');
+            } else if (categoryType === 'General') {
+                personalizedSubSec.classList.add('hidden');
+                generalSubSec.classList.remove('hidden');
+            } else {
+                personalizedSubSec.classList.add('hidden');
+                generalSubSec.classList.add('hidden');
+            }
+
             if (categoryType === 'all') {
                 renderProducts(allProducts);
             } else {
                 const filtered = allProducts.filter(p => p.category && p.category.toLowerCase().includes(categoryType.toLowerCase()));
                 renderProducts(filtered);
             }
+        }
+
+        // Filter by Subcategory
+        function filterBySubcategory(subKeyword) {
+            const filtered = allProducts.filter(p => 
+                (p.item_name && p.item_name.toLowerCase().includes(subKeyword.toLowerCase())) || 
+                (p.description && p.description.toLowerCase().includes(subKeyword.toLowerCase()))
+            );
+            renderProducts(filtered);
         }
 
         // Modal Controls with Default Sender Name Pre-fill
