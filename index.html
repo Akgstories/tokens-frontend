@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Tokens - India's Dedicated Gifting Platform for hyper-local fast delivery, personalized gifts, corporate hampers, and multi-store shopping.">
-    <meta name="google-site-verification" content="gTtubgamaOg-VUT5irGKIN7OHJPqkLLLCI5VaWOoJJc" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tokens - India's Dedicated Gifting Platform</title>
     <!-- Tailwind CSS CDN -->
@@ -40,8 +39,8 @@
                 <span id="live-clock" class="hidden sm:inline-block ml-4 text-xs font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-full">📍 IST: Connecting...</span>
             </div>
 
-            <!-- Desktop Nav Links (FNP Mega-Menu Inspired) -->
-            <nav class="hidden md:flex items-center space-x-6 font-medium text-sm text-gray-700">
+            <!-- Desktop Nav Links -->
+            <nav class="hidden lg:flex items-center space-x-5 font-medium text-sm text-gray-700">
                 <button onclick="switchPage('home')" class="hover:text-brandPink transition focus:outline-none">Home</button>
                 <button onclick="switchPage('catalog')" class="hover:text-brandPink transition focus:outline-none">All Gifts</button>
                 <button onclick="switchPage('catalog'); filterCatalog('Personalized')" class="hover:text-brandPink transition focus:outline-none text-brandPink font-bold">✨ Personalised</button>
@@ -50,6 +49,7 @@
                 <button onclick="switchPage('corporate')" class="hover:text-brandPink transition focus:outline-none">Corporate</button>
                 <button onclick="switchPage('onboard')" class="hover:text-brandPink transition focus:outline-none">Partner With Us</button>
                 <button onclick="handlePartnerNavClick()" class="hover:text-brandPink transition focus:outline-none font-bold" id="partner-nav-btn">Partner Portal</button>
+                <button onclick="switchPage('admin-login')" class="hover:text-brandPink transition focus:outline-none font-bold text-slate-900 bg-slate-100 px-3 py-1.5 rounded-xl text-xs">Admin 🛡️</button>
             </nav>
 
             <div class="hidden md:flex items-center space-x-4">
@@ -60,24 +60,25 @@
                 <button onclick="switchPage('catalog')" class="bg-brandPink text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-brandPink/25 hover:bg-pink-700 transition">Start Gifting</button>
             </div>
 
-            <button onclick="toggleMobileMenu()" class="md:hidden text-gray-700 focus:outline-none p-2">
+            <button onclick="toggleMobileMenu()" class="lg:hidden text-gray-700 focus:outline-none p-2">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-100 px-6 py-6 space-y-4 shadow-xl">
-            <button onclick="switchPage('home'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Home</button>
-            <button onclick="switchPage('catalog'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Shop All Gifts</button>
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-gray-100 px-6 py-6 space-y-4 shadow-xl">
+            <button onclick="switchPage('home'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700">Home</button>
+            <button onclick="switchPage('catalog'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700">Shop All Gifts</button>
             <button onclick="switchPage('catalog'); filterCatalog('Personalized'); toggleMobileMenu();" class="block w-full text-left font-bold text-brandPink">✨ Personalised Gifts</button>
-            <button onclick="switchPage('hub'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Multi-Store Hub</button>
-            <button onclick="switchPage('pool-gifting'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Pool Gifting</button>
-            <button onclick="switchPage('corporate'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Corporate</button>
-            <button onclick="switchPage('onboard'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Partner With Us</button>
+            <button onclick="switchPage('hub'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700">Multi-Store Hub</button>
+            <button onclick="switchPage('pool-gifting'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700">Pool Gifting</button>
+            <button onclick="switchPage('corporate'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700">Corporate</button>
+            <button onclick="switchPage('onboard'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700">Partner With Us</button>
             <button onclick="handlePartnerNavClick(); toggleMobileMenu();" class="block w-full text-left font-bold text-brandPink">Partner Portal</button>
-            <button onclick="toggleCart(); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Cart 🛒</button>
-            <button onclick="handleAuthNavClick(); toggleMobileMenu();" id="mobile-auth-btn" class="block w-full text-left font-semibold text-gray-800 hover:text-brandPink">Log In / Sign Up</button>
+            <button onclick="switchPage('admin-login'); toggleMobileMenu();" class="block w-full text-left font-bold text-slate-900">Admin Portal 🛡️</button>
+            <button onclick="toggleCart(); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700">Cart 🛒</button>
+            <button onclick="handleAuthNavClick(); toggleMobileMenu();" id="mobile-auth-btn" class="block w-full text-left font-semibold text-gray-800">Log In / Sign Up</button>
         </div>
     </header>
 
@@ -86,8 +87,6 @@
         <!-- PAGE: HOME -->
         <section id="page-home" class="page-view relative overflow-hidden bg-gradient-to-b from-brandLightPink/40 to-white pt-12 pb-20 lg:pt-16 lg:pb-28">
             <div class="max-w-7xl mx-auto px-6 space-y-12">
-                
-                <!-- Hero Grid -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                     <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
                         <div class="inline-flex items-center space-x-2 bg-brandPink/10 text-brandPink px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
@@ -101,7 +100,6 @@
                             From custom-engraved treasures to curated luxury hampers, find the perfect gift for every relationship and occasion.
                         </p>
                         
-                        <!-- FNP-Style Pincode/Hostel Checker Widget -->
                         <div class="bg-white p-4 rounded-2xl shadow-lg border border-gray-100 max-w-xl mx-auto lg:mx-0 flex flex-col sm:flex-row items-center gap-3">
                             <div class="flex items-center space-x-2 w-full sm:w-auto">
                                 <span class="text-xl">📍</span>
@@ -149,37 +147,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- FNP-Style "Shop By Recipient" Quick-Finder Grid -->
-                <div class="pt-10 border-t border-gray-100">
-                    <div class="text-center space-y-2 mb-8">
-                        <h2 class="text-2xl font-black text-gray-900 tracking-tight">Shop By Recipient & Relationship</h2>
-                        <p class="text-sm text-gray-500">Find handpicked gifts tailored precisely for who you're celebrating.</p>
-                    </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
-                        <button onclick="switchPage('catalog'); filterCatalog('Personalized');" class="bg-gray-50 hover:bg-brandLightPink/50 border border-gray-100 p-6 rounded-3xl text-center space-y-3 transition group">
-                            <div class="w-16 h-16 bg-pink-100 text-brandPink rounded-2xl mx-auto flex items-center justify-center text-2xl group-hover:scale-110 transition">👩</div>
-                            <h4 class="font-bold text-gray-900 text-sm">Gifts For Her</h4>
-                            <p class="text-[11px] text-gray-500">Lamps, Frames & Perfumes</p>
-                        </button>
-                        <button onclick="switchPage('catalog'); filterCatalog('General');" class="bg-gray-50 hover:bg-brandLightPink/50 border border-gray-100 p-6 rounded-3xl text-center space-y-3 transition group">
-                            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl mx-auto flex items-center justify-center text-2xl group-hover:scale-110 transition">👨</div>
-                            <h4 class="font-bold text-gray-900 text-sm">Gifts For Him</h4>
-                            <p class="text-[11px] text-gray-500">Watches, Wallets & Sippers</p>
-                        </button>
-                        <button onclick="switchPage('catalog'); filterBySubcategory('Keychain');" class="bg-gray-50 hover:bg-brandLightPink/50 border border-gray-100 p-6 rounded-3xl text-center space-y-3 transition group">
-                            <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-2xl mx-auto flex items-center justify-center text-2xl group-hover:scale-110 transition">🧑‍🤝‍🧑</div>
-                            <h4 class="font-bold text-gray-900 text-sm">For Peers & Friends</h4>
-                            <p class="text-[11px] text-gray-500">Keychains & Bracelets</p>
-                        </button>
-                        <button onclick="switchPage('corporate')" class="bg-gray-50 hover:bg-brandLightPink/50 border border-gray-100 p-6 rounded-3xl text-center space-y-3 transition group">
-                            <div class="w-16 h-16 bg-amber-100 text-amber-700 rounded-2xl mx-auto flex items-center justify-center text-2xl group-hover:scale-110 transition">🏫</div>
-                            <h4 class="font-bold text-gray-900 text-sm">Campus & Corporate</h4>
-                            <p class="text-[11px] text-gray-500">Desk Lamps & Hampers</p>
-                        </button>
-                    </div>
-                </div>
-
             </div>
         </section>
 
@@ -211,23 +178,6 @@
                             <button type="button" id="signupBtn" class="flex-1 bg-gray-100 text-gray-700 py-3.5 rounded-xl font-bold text-sm hover:bg-gray-200 transition">Sign Up</button>
                         </div>
                     </form>
-
-                    <div class="relative flex py-2 items-center">
-                        <div class="flex-grow border-t border-gray-200"></div>
-                        <span class="flex-shrink mx-4 text-gray-400 text-xs uppercase font-bold">Or</span>
-                        <div class="flex-grow border-t border-gray-200"></div>
-                    </div>
-
-                    <button type="button" id="googleLoginBtn" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 text-gray-700 py-3.5 rounded-xl font-bold text-sm shadow-sm hover:bg-gray-50 transition">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-                            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.15 21.32 7.22 24 12 24z"/>
-                            <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.18C.43 8.12 0 9.83 0 12s.43 3.88 1.18 5.4l4.09-3.16z"/>
-                            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.15 2.68 1.18 6.6l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/>
-                        </svg>
-                        Continue with Google
-                    </button>
-
                     <p id="authMessage" class="text-xs font-semibold text-center"></p>
                 </div>
             </div>
@@ -242,15 +192,66 @@
                         <h2 class="text-3xl font-black text-gray-900 mt-3">Partner Login</h2>
                         <p class="text-sm text-gray-500 mt-1">Enter your unique Partner ID to manage your store catalog</p>
                     </div>
-                    
                     <form id="partner-login-form" class="space-y-4 text-left">
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-gray-700 uppercase">Partner ID</label>
-                            <input type="text" id="login-partner-id" placeholder="e.g. 4a82b1" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink" />
-                        </div>
-                        <button type="submit" id="partner-login-btn" class="w-full bg-brandPink text-white py-3.5 rounded-xl font-bold text-sm shadow-md hover:bg-pink-700 transition">Log In to Dashboard</button>
+                        <input type="text" id="login-partner-id" placeholder="e.g. 4a82b1" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brandPink" />
+                        <button type="submit" class="w-full bg-brandPink text-white py-3.5 rounded-xl font-bold text-sm shadow-md hover:bg-pink-700 transition">Log In to Dashboard</button>
                         <p id="partner-login-msg" class="text-xs font-semibold text-center"></p>
                     </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: ADMIN LOGIN -->
+        <section id="page-admin-login" class="page-view hidden py-20 bg-gray-50 min-h-[80vh] flex items-center justify-center">
+            <div class="max-w-md w-full px-6">
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 space-y-6 text-center">
+                    <div>
+                        <span class="text-xs font-bold tracking-widest text-slate-900 uppercase bg-slate-100 px-3 py-1 rounded-full">Admin Security</span>
+                        <h2 class="text-3xl font-black text-gray-900 mt-3">Admin Portal</h2>
+                        <p class="text-sm text-gray-500 mt-1">Enter master password to moderate partner products</p>
+                    </div>
+                    <form id="admin-login-form" onsubmit="handleAdminLogin(event)" class="space-y-4 text-left">
+                        <input type="password" id="admin-password-input" placeholder="Master Password" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-slate-900" />
+                        <button type="submit" class="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold text-sm shadow-md hover:bg-slate-800 transition">Access Control Room 🛡️</button>
+                        <p id="admin-login-msg" class="text-xs font-semibold text-center text-red-500"></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: ADMIN CONTROL ROOM -->
+        <section id="page-admin-dashboard" class="page-view hidden py-16 bg-slate-50 min-h-[80vh]">
+            <div class="max-w-7xl mx-auto px-6 space-y-8">
+                <div class="flex justify-between items-center bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <div>
+                        <span class="text-xs font-bold text-slate-900 uppercase bg-slate-100 px-3 py-1 rounded-full">Admin Control Center</span>
+                        <h2 class="text-3xl font-black text-gray-900 mt-1">Platform Moderation & Management</h2>
+                    </div>
+                    <button onclick="switchPage('home')" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-xs font-bold hover:bg-gray-200 transition">Log Out Admin</button>
+                </div>
+
+                <!-- 1. Pending Approvals Queue -->
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 space-y-6">
+                    <h3 class="text-xl font-bold text-gray-900">📦 Pending Partner Products Awaiting Approval</h3>
+                    <div id="admin-pending-products-container" class="space-y-4">
+                        <p class="text-xs text-gray-400">Loading pending items...</p>
+                    </div>
+                </div>
+
+                <!-- 2. All Listed Products Control -->
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 space-y-6">
+                    <h3 class="text-xl font-bold text-gray-900">🛍️ All Platform Products (Live & Pending)</h3>
+                    <div id="admin-all-products-container" class="space-y-4">
+                        <p class="text-xs text-gray-400">Loading all products...</p>
+                    </div>
+                </div>
+
+                <!-- 3. Registered Partners View -->
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 space-y-6">
+                    <h3 class="text-xl font-bold text-gray-900">🤝 Registered Partner Stores</h3>
+                    <div id="admin-partners-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <p class="text-xs text-gray-400">Loading registered partners...</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -264,17 +265,17 @@
                     <p class="text-gray-600 text-base">We bring together top-rated boutique gift stores and local creators into a single destination.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl transition duration-300">
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
                         <span class="bg-pink-50 text-brandPink font-bold text-xs px-3 py-1 rounded-lg">Featured Partner</span>
                         <h3 class="text-xl font-bold text-gray-900 mt-3">Artisan Print & Engrave</h3>
                         <p class="text-sm text-gray-500 mt-2 mb-6">Specializes in custom mugs, keychains, and memory frames.</p>
                     </div>
-                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl transition duration-300">
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
                         <span class="bg-yellow-50 text-yellow-700 font-bold text-xs px-3 py-1 rounded-lg">Top Rated</span>
                         <h3 class="text-xl font-bold text-gray-900 mt-3">Aesthetic Vibes Decor</h3>
                         <p class="text-sm text-gray-500 mt-2 mb-6">Boutique wall decor, fairy lights, and room aesthetic boxes.</p>
                     </div>
-                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl transition duration-300">
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
                         <span class="bg-purple-50 text-purple-700 font-bold text-xs px-3 py-1 rounded-lg">Exclusive Bundles</span>
                         <h3 class="text-xl font-bold text-gray-900 mt-3">The Hamper Co.</h3>
                         <p class="text-sm text-gray-500 mt-2 mb-6">Self-designed gift combos and luxury care packages.</p>
@@ -285,115 +286,20 @@
 
         <!-- PAGE: SHOP GIFTS (CATALOG) -->
         <section id="page-catalog" class="page-view hidden py-16 bg-white min-h-[80vh]">
-            
-            <!-- Sticky Glassmorphism Category Ribbon -->
             <div class="sticky top-20 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 py-3 px-6 mb-12 shadow-sm">
-                <div class="max-w-7xl mx-auto flex items-center space-x-4 overflow-x-auto scrollbar-none">
-                    <button onclick="filterCatalog('all')" id="filter-all" class="flex-shrink-0 px-5 py-2 rounded-full text-xs font-bold bg-brandPink text-white shadow-md transition">All Gifts</button>
-                    <button onclick="filterCatalog('Personalized')" id="filter-personalized" class="flex-shrink-0 px-5 py-2 rounded-full text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition">✨ Personalized Gifting</button>
-                    <button onclick="filterCatalog('General')" id="filter-general" class="flex-shrink-0 px-5 py-2 rounded-full text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition">🎁 General Gifting</button>
+                <div class="max-w-7xl mx-auto flex items-center space-x-4 overflow-x-auto">
+                    <button onclick="filterCatalog('all')" id="filter-all" class="flex-shrink-0 px-5 py-2 rounded-full text-xs font-bold bg-brandPink text-white shadow-md">All Gifts</button>
+                    <button onclick="filterCatalog('Personalized')" id="filter-personalized" class="flex-shrink-0 px-5 py-2 rounded-full text-xs font-bold bg-gray-100 text-gray-700">✨ Personalized</button>
+                    <button onclick="filterCatalog('General')" id="filter-general" class="flex-shrink-0 px-5 py-2 rounded-full text-xs font-bold bg-gray-100 text-gray-700">🎁 General</button>
                 </div>
             </div>
-
             <div class="max-w-7xl mx-auto px-6">
                 <div class="text-center max-w-3xl mx-auto space-y-4 mb-10">
                     <span class="text-xs font-bold tracking-widest text-brandPink uppercase bg-brandPink/10 px-3 py-1 rounded-full">Partner Storefronts</span>
                     <h2 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">Curated Gifts Ready for Fast Delivery</h2>
-                    <p class="text-gray-600 text-base">Choose an item from our verified local partner shops, add your personal touch, and have it delivered instantly.</p>
                 </div>
-
-                <!-- Personalized Subcategories -->
-                <div id="personalized-subcategories-section" class="mb-14 hidden">
-                    <h3 class="text-lg font-black text-gray-900 mb-6 px-2">Explore Personalized Gifting Categories</h3>
-                    <div class="flex overflow-x-auto space-x-6 pb-4 scrollbar-thin scrollbar-thumb-gray-200 px-2">
-                        <button onclick="filterBySubcategory('Mug', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-pink-50 border-2 border-pink-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">☕</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Mugs</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Keychain', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-purple-50 border-2 border-purple-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🔑</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Keychains</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Waterbottle', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-50 border-2 border-blue-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🍼</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Waterbottles</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Phone cover', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-yellow-50 border-2 border-yellow-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">📱</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Phone covers</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Light', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-amber-50 border-2 border-amber-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">💡</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Lights</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Table decor', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-teal-50 border-2 border-teal-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🏺</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Table decors</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Photo frame', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-emerald-50 border-2 border-emerald-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🖼️</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Photo frames</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Cushion', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-orange-50 border-2 border-orange-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🛋️</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Cushions</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- General Subcategories -->
-                <div id="general-subcategories-section" class="mb-14 hidden">
-                    <h3 class="text-lg font-black text-gray-900 mb-6 px-2">Explore General Gifting Categories</h3>
-                    <div class="flex overflow-x-auto space-x-6 pb-4 scrollbar-thin scrollbar-thumb-gray-200 px-2">
-                        <button onclick="filterBySubcategory('Keychain', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-pink-50 border-2 border-pink-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🔑</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Keychains</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Watch', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-50 border-2 border-blue-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">⌚</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Watches</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Bracelet', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-purple-50 border-2 border-purple-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">📿</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Bracelets</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Table decor', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-yellow-50 border-2 border-yellow-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🏺</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Table decor</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Desk lamp', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-amber-50 border-2 border-amber-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">💡</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Desk lamps</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Sipper', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-teal-50 border-2 border-teal-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🍼</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Sipper</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Tumbler', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-indigo-50 border-2 border-indigo-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🥤</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Tumbler</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Shaker', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-rose-50 border-2 border-rose-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🍸</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Shaker</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Photo frame', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-emerald-50 border-2 border-emerald-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">🖼️</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Photo frames</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Photo', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-cyan-50 border-2 border-cyan-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">📸</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Photos</span>
-                        </button>
-                        <button onclick="filterBySubcategory('Deodrant', this)" class="subcat-btn flex flex-col items-center space-y-2 flex-shrink-0 group focus:outline-none">
-                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-fuchsia-50 border-2 border-fuchsia-100 flex items-center justify-center text-3xl shadow-sm group-hover:border-brandPink group-hover:scale-105 transition">✨</div>
-                            <span class="text-xs font-bold text-gray-700 group-hover:text-brandPink transition">Deodrants and perfumes</span>
-                        </button>
-                    </div>
-                </div>
-
                 <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="text-center py-12 col-span-3 text-gray-400">Loading live items from partner stores...</div>
+                    <div class="text-center py-12 col-span-3 text-gray-400">Loading approved catalog items...</div>
                 </div>
             </div>
         </section>
@@ -408,7 +314,6 @@
                 </div>
                 <div class="lg:col-span-6 bg-gray-50 p-8 rounded-3xl border border-gray-100 shadow-xl space-y-6">
                     <h3 class="text-2xl font-bold text-gray-900">Start a Group Pool Link 🚀</h3>
-                    <p class="text-sm text-gray-500">Create a contribution link and share it on WhatsApp instantly.</p>
                     <button type="button" onclick="showToast('Pool creation link generated! Share with friends.')" class="w-full bg-brandPink text-white py-3.5 rounded-xl font-bold text-sm hover:bg-pink-700 transition shadow-md">
                         Create Pool Link
                     </button>
@@ -422,7 +327,6 @@
                 <div class="lg:col-span-7 space-y-6">
                     <span class="text-xs font-bold tracking-widest text-pink-400 uppercase bg-pink-500/10 px-3 py-1 rounded-full">B2B Solutions</span>
                     <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-white">Corporate Gifting & Bulk Orders Made Effortless</h2>
-                    <p class="text-gray-300 text-base">Reward your team or handle campus event merchandising with dedicated bulk packages.</p>
                 </div>
                 <div class="lg:col-span-5 bg-gray-800 p-8 rounded-3xl border border-gray-700 space-y-4 shadow-2xl">
                     <h3 class="text-xl font-bold text-white">Request a Corporate Catalog</h3>
@@ -468,17 +372,18 @@
 
         <!-- PAGE: PARTNER DASHBOARD -->
         <section id="page-partner-dashboard" class="page-view hidden py-20 bg-gray-50 min-h-[80vh]">
-            <div class="max-w-4xl mx-auto px-6 space-y-12">
-                <div class="text-center space-y-3 flex justify-between items-center">
+            <div class="max-w-5xl mx-auto px-6 space-y-12">
+                <div class="flex justify-between items-center bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
                     <div>
-                        <span class="text-xs font-bold tracking-widest text-brandPink uppercase bg-brandPink/10 px-3 py-1 rounded-full">Partner Portal</span>
-                        <h2 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mt-2">Manage Store Dashboard</h2>
+                        <span class="text-xs font-bold tracking-widest text-brandPink uppercase bg-brandLightPink px-3 py-1 rounded-full">Partner Portal</span>
+                        <h2 class="text-3xl font-black text-gray-900 mt-1" id="partner-store-heading">Store Dashboard</h2>
                     </div>
                     <button onclick="handlePartnerLogout()" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-red-100 transition">Log Out Partner</button>
                 </div>
 
+                <!-- Publish New Product Section -->
                 <div class="bg-white p-8 sm:p-12 rounded-3xl shadow-xl border border-gray-100">
-                    <h3 class="text-2xl font-black text-gray-900 mb-6">Publish New Product 🎁</h3>
+                    <h3 class="text-2xl font-black text-gray-900 mb-6">Publish New Product (Requires Admin Approval) 🎁</h3>
                     <form id="partner-product-form" class="space-y-6">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div class="space-y-1">
@@ -512,14 +417,18 @@
                             <input type="file" id="p-image-file" accept="image/*" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-brandPink file:text-white hover:file:bg-pink-700">
                         </div>
                         <button type="submit" id="p-submit-btn" class="w-full bg-brandPink text-white py-4 rounded-xl font-bold text-base hover:bg-pink-700 transition shadow-lg">
-                            Publish Product to Catalog 🚀
+                            Submit Product for Approval 🚀
                         </button>
                         <p id="p-status" class="text-xs text-center font-semibold text-brandPink hidden"></p>
                     </form>
                 </div>
 
+                <!-- Live Store Orders & Status Management -->
                 <div class="bg-white p-8 sm:p-12 rounded-3xl shadow-xl border border-gray-100">
-                    <h3 class="text-2xl font-black text-gray-900 mb-6">Live Store Orders 📦</h3>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-black text-gray-900">Live Store Orders & Dispatch 📦</h3>
+                        <button onclick="currentPartner && loadPartnerOrders(currentPartner.store_name)" class="text-xs font-bold text-brandPink hover:underline">Refresh Orders 🔄</button>
+                    </div>
                     <div id="partner-orders-container" class="space-y-4">
                         <p class="text-xs text-gray-400">Loading your store orders...</p>
                     </div>
@@ -555,7 +464,7 @@
         </div>
     </div>
 
-    <!-- REDESIGNED USER DASHBOARD MODAL -->
+    <!-- USER DASHBOARD MODAL -->
     <div id="dashboard-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-2xl w-full p-8 relative space-y-6 shadow-2xl max-h-[90vh] flex flex-col">
             <button onclick="toggleDashboard()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-800 font-bold text-xl bg-gray-100 w-9 h-9 rounded-full flex items-center justify-center transition">✕</button>
@@ -587,7 +496,10 @@
             </div>
 
             <div class="flex-1 overflow-y-auto space-y-3 pr-1">
-                <h4 class="font-bold text-gray-800 text-sm">Order Tracking & History</h4>
+                <div class="flex justify-between items-center">
+                    <h4 class="font-bold text-gray-800 text-sm">Order Tracking & History</h4>
+                    <button onclick="currentUser && fetchUserOrders(currentUser.email)" class="text-[11px] text-brandPink font-bold hover:underline">Refresh 🔄</button>
+                </div>
                 <div id="dashboard-orders-list" class="space-y-3">
                     <p class="text-xs text-gray-400 text-center py-6">Loading your orders...</p>
                 </div>
@@ -625,13 +537,13 @@
                 </div>
                 <div class="space-y-1">
                     <label class="text-xs font-bold text-gray-700 uppercase">Custom Gift Message / Note</label>
-                    <textarea id="gift-message" rows="3" placeholder="Write a heartfelt note to accompany the gift..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brandPink"></textarea>
+                    <textarea id="gift-message" rows="3" placeholder="Write a heartfelt note..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brandPink"></textarea>
                 </div>
                 <div class="space-y-1">
                     <label class="text-xs font-bold text-gray-700 uppercase">Your Name (Sender)</label>
                     <input type="text" id="sender-name" placeholder="e.g., Aditya Kumar" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brandPink">
                 </div>
-                <button type="submit" id="order-submit-btn" class="w-full bg-brandPink text-white py-3.5 rounded-xl font-bold text-sm shadow-lg hover:bg-pink-700 transition">
+                <button type="submit" class="w-full bg-brandPink text-white py-3.5 rounded-xl font-bold text-sm shadow-lg hover:bg-pink-700 transition">
                     Add to Cart & Order ✨
                 </button>
             </form>
@@ -642,21 +554,16 @@
     <footer class="bg-gray-900 text-gray-400 py-12 border-t border-gray-800 mt-auto">
         <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
             <span class="text-xl font-black text-white tracking-tight">TOKENS</span>
-            <p class="text-xs text-center">© 2026 Tokens Gifting Platform. Hyper-local fast-delivery gifting ecosystem.</p>
+            <p class="text-xs text-center">© 2026 Tokens Gifting Platform. Hyper-local fast-delivery ecosystem.</p>
         </div>
     </footer>
 
-    <!-- Frontend JavaScript Logic -->
+    <!-- Frontend Script Engine -->
     <script>
         const RENDER_BACKEND_URL = 'https://tokens-backend-1.onrender.com';
-
         const SUPABASE_URL = "https://xhipfasywzgkmpoogaaz.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_K1MGEBgEhHL50VGjS5pipQ_JJfWFDhc";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        const SITE_URL = window.location.hostname.includes('127.0.0.1') || window.location.hostname.includes('localhost') 
-            ? window.location.origin 
-            : 'https://tokensforeveryone.in';
 
         let cart = [];
         let currentUser = null;
@@ -668,352 +575,287 @@
             document.getElementById('toast-msg').textContent = message;
             document.getElementById('toast-icon').textContent = icon;
             banner.classList.remove('translate-y-32', 'opacity-0');
-            setTimeout(() => {
-                banner.classList.add('translate-y-32', 'opacity-0');
-            }, 3500);
+            setTimeout(() => banner.classList.add('translate-y-32', 'opacity-0'), 3500);
         }
 
         function switchPage(pageId) {
-            const pages = document.querySelectorAll('.page-view');
-            pages.forEach(p => p.classList.add('hidden'));
-
+            document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
             const target = document.getElementById(`page-${pageId}`);
-            if (target) {
-                target.classList.remove('hidden');
-                window.scrollTo(0, 0);
-            }
+            if (target) { target.classList.remove('hidden'); window.scrollTo(0, 0); }
         }
 
-        function toggleMobileMenu() {
-            const menu = document.getElementById("mobile-menu");
-            menu.classList.toggle("hidden");
-        }
-
-        function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            drawer.classList.toggle('translate-x-full');
-        }
-
+        function toggleMobileMenu() { document.getElementById("mobile-menu").classList.toggle("hidden"); }
+        function toggleCart() { document.getElementById('cart-drawer').classList.toggle('translate-x-full'); }
         function checkDeliveryAvailability() {
-            const val = document.getElementById('delivery-pincode-input').value.trim();
-            const resEl = document.getElementById('delivery-check-result');
-            if(!val) {
-                showToast("Please enter a valid pincode or hostel room!", "⚠️");
-                return;
-            }
-            resEl.classList.remove('hidden');
+            document.getElementById('delivery-check-result').classList.remove('hidden');
             showToast("Slots verified! Express delivery available ⚡", "🚀");
         }
 
         async function toggleDashboard() {
             const modal = document.getElementById('dashboard-modal');
             modal.classList.toggle('hidden');
-            
             if (!modal.classList.contains('hidden') && currentUser) {
                 document.getElementById('dashboard-user-email').textContent = currentUser.email;
-                const metadata = currentUser.user_metadata || {};
-                const savedName = metadata.display_name || metadata.full_name || "Valued Customer";
-                const nameHeading = document.getElementById('dashboard-user-name-heading');
-                nameHeading.textContent = `Hello, ${savedName}! 👋`;
-                
-                const initials = savedName.charAt(0).toUpperCase();
-                document.getElementById('user-avatar-initials').textContent = initials;
-
+                const name = currentUser.user_metadata?.full_name || currentUser.user_metadata?.display_name || "Customer";
+                document.getElementById('dashboard-user-name-heading').textContent = `Hello, ${name}! 👋`;
+                document.getElementById('user-avatar-initials').textContent = name.charAt(0).toUpperCase();
                 fetchUserOrders(currentUser.email);
             }
         }
 
-        function handleAuthNavClick() {
-            if (currentUser) {
-                toggleDashboard();
+        function handleAuthNavClick() { currentUser ? toggleDashboard() : switchPage('auth'); }
+        function handlePartnerNavClick() { currentPartner ? switchPage('partner-dashboard') : switchPage('partner-login'); }
+        function handlePartnerLogout() { currentPartner = null; showToast("Logged out.", "👋"); switchPage('home'); }
+
+        // --- Admin Script Handlers ---
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('admin-password-input').value;
+            if (pass === "tokensadmin2026") {
+                showToast("Admin access granted! 🛡️");
+                switchPage('admin-dashboard');
+                loadPendingProductsForAdmin();
+                loadAllProductsForAdmin();
+                loadPartnersForAdmin();
             } else {
-                switchPage('auth');
+                document.getElementById('admin-login-msg').textContent = "Invalid Admin Master Password.";
             }
         }
 
-        function handlePartnerNavClick() {
-            if (currentPartner) {
-                switchPage('partner-dashboard');
-            } else {
-                switchPage('partner-login');
+        async function loadPendingProductsForAdmin() {
+            const container = document.getElementById('admin-pending-products-container');
+            try {
+                const res = await fetch(`${RENDER_BACKEND_URL}/api/admin/products/pending`);
+                const result = await res.json();
+                if (result.data && result.data.length > 0) {
+                    container.innerHTML = result.data.map(prod => `
+                        <div class="p-5 border rounded-2xl bg-gray-50 flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div class="flex items-center space-x-4">
+                                <img src="${prod.image_url}" class="w-16 h-16 object-cover rounded-xl border">
+                                <div>
+                                    <p class="font-bold text-gray-900 text-sm">${prod.item_name}</p>
+                                    <p class="text-xs text-gray-500">Store: ${prod.store_name} • ₹${prod.price}</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="moderateProduct('${prod.id}', 'approved')" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-emerald-700">Approve ✅</button>
+                                <button onclick="moderateProduct('${prod.id}', 'rejected')" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-red-100">Reject ❌</button>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `<p class="text-xs text-gray-400 text-center py-6">No pending products waiting for review.</p>`;
+                }
+            } catch (err) {
+                container.innerHTML = `<p class="text-xs text-red-500">Failed to load moderation queue.</p>`;
             }
         }
 
-        function handlePartnerLogout() {
-            currentPartner = null;
-            showToast("Logged out of partner session.", "👋");
-            switchPage('home');
+        async function loadAllProductsForAdmin() {
+            const container = document.getElementById('admin-all-products-container');
+            try {
+                const res = await fetch(`${RENDER_BACKEND_URL}/api/admin/products/all`);
+                const result = await res.json();
+                if (result.data && result.data.length > 0) {
+                    container.innerHTML = result.data.map(prod => `
+                        <div class="p-4 border rounded-2xl bg-gray-50 flex justify-between items-center gap-4">
+                            <div class="flex items-center space-x-3">
+                                <img src="${prod.image_url}" class="w-12 h-12 object-cover rounded-xl border">
+                                <div>
+                                    <p class="font-bold text-gray-900 text-xs">${prod.item_name} <span class="text-[10px] px-2 py-0.5 rounded font-semibold ${prod.status === 'approved' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${prod.status || 'approved'}</span></p>
+                                    <p class="text-[11px] text-gray-500">Store: ${prod.store_name} • ₹${prod.price}</p>
+                                </div>
+                            </div>
+                            <button onclick="adminDeleteProduct('${prod.id}')" class="bg-red-50 text-red-600 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-red-100">Delete 🗑️</button>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `<p class="text-xs text-gray-400">No products found on platform.</p>`;
+                }
+            } catch (err) {
+                container.innerHTML = `<p class="text-xs text-red-500">Failed to load product catalog.</p>`;
+            }
+        }
+
+        async function loadPartnersForAdmin() {
+            const container = document.getElementById('admin-partners-container');
+            try {
+                const res = await fetch(`${RENDER_BACKEND_URL}/api/admin/partners`);
+                const result = await res.json();
+                if (result.data && result.data.length > 0) {
+                    container.innerHTML = result.data.map(partner => `
+                        <div class="p-4 border rounded-2xl bg-gray-50 space-y-1">
+                            <p class="font-bold text-gray-900 text-sm">${partner.store_name}</p>
+                            <p class="text-xs text-gray-500">Founder: ${partner.founder_name} • Email: ${partner.email}</p>
+                            <p class="text-[11px] text-brandPink font-semibold">Partner ID: ${partner.partner_id}</p>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `<p class="text-xs text-gray-400">No registered partners found.</p>`;
+                }
+            } catch (err) {
+                container.innerHTML = `<p class="text-xs text-red-500">Failed to load partners.</p>`;
+            }
+        }
+
+        async function adminDeleteProduct(productId) {
+            if (!confirm("Are you sure you want to permanently delete this product?")) return;
+            try {
+                const res = await fetch(`${RENDER_BACKEND_URL}/api/admin/products/${productId}`, { method: "DELETE" });
+                if (res.ok) {
+                    showToast("Product deleted successfully!");
+                    loadAllProductsForAdmin();
+                    loadPendingProductsForAdmin();
+                } else {
+                    showToast("Failed to delete product.", "❌");
+                }
+            } catch (err) {
+                showToast("Network error.", "❌");
+            }
+        }
+
+        async function moderateProduct(productId, decision) {
+            try {
+                const res = await fetch(`${RENDER_BACKEND_URL}/api/admin/products/${productId}/status`, {
+                    method: "PATCH", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status: decision })
+                });
+                if (res.ok) {
+                    showToast(`Product successfully ${decision}! 🎉`);
+                    loadPendingProductsForAdmin();
+                    loadAllProductsForAdmin();
+                } else {
+                    showToast("Moderation failed.", "❌");
+                }
+            } catch (err) {
+                showToast("Network error.", "❌");
+            }
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
             const { data: { session } } = await supabaseClient.auth.getSession();
-            if (session) {
-                currentUser = session.user;
-                updateAuthButtonUI();
-            }
+            if (session) { currentUser = session.user; updateAuthButtonUI(); }
 
+            supabaseClient.auth.onAuthStateChange((event, session) => {
+                currentUser = session ? session.user : null;
+                updateAuthButtonUI();
+            });
+
+            // Clock update
             const clockEl = document.getElementById("live-clock");
-            function updateLiveTime() {
-                const now = new Date();
-                const timeString = now.toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true });
-                if (clockEl) clockEl.textContent = `📍 IST: ${timeString}`;
-            }
-            updateLiveTime();
-            setInterval(updateLiveTime, 60000);
+            setInterval(() => {
+                if (clockEl) clockEl.textContent = `📍 IST: ${new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true })}`;
+            }, 60000);
 
             loadProductsCatalog();
 
-            const authForm = document.getElementById('authForm');
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            const signupNameInput = document.getElementById('signup-name');
-            const loginBtn = document.getElementById('loginBtn');
-            const signupBtn = document.getElementById('signupBtn');
-            const authMessage = document.getElementById('authMessage');
-
-            if (loginBtn && signupBtn && authForm) {
-                loginBtn.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    authMessage.textContent = "Logging in...";
-                    const { data, error } = await supabaseClient.auth.signInWithPassword({
-                        email: emailInput.value,
-                        password: passwordInput.value,
-                    });
-
-                    if (error) {
-                        authMessage.style.color = '#dc2626';
-                        authMessage.textContent = error.message;
-                    } else {
-                        currentUser = data.user;
-                        updateAuthButtonUI();
-                        authMessage.style.color = '#16a34a';
-                        authMessage.textContent = 'Logged in successfully! Redirecting...';
-                        setTimeout(() => switchPage('home'), 1000);
-                    }
+            // Auth handlers
+            document.getElementById('loginBtn')?.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value
                 });
+                if (error) document.getElementById('authMessage').textContent = error.message;
+                else { currentUser = data.user; updateAuthButtonUI(); switchPage('home'); showToast("Logged in successfully!"); }
+            });
 
-                signupBtn.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    const fullName = signupNameInput.value.trim();
-                    authMessage.textContent = "Creating account...";
-                    
-                    const { data, error } = await supabaseClient.auth.signUp({
-                        email: emailInput.value,
-                        password: passwordInput.value,
-                        options: {
-                            emailRedirectTo: SITE_URL,
-                            data: { display_name: fullName, full_name: fullName }
-                        }
-                    });
-
-                    if (error) {
-                        authMessage.style.color = '#dc2626';
-                        authMessage.textContent = error.message;
-                    } else {
-                        authMessage.style.color = '#16a34a';
-                        authMessage.textContent = 'Account created successfully! Check your email for verification.';
-                    }
+            document.getElementById('signupBtn')?.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const fullName = document.getElementById('signup-name').value;
+                const { error } = await supabaseClient.auth.signUp({
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value,
+                    options: { data: { full_name: fullName } }
                 });
-            }
+                if (error) document.getElementById('authMessage').textContent = error.message;
+                else showToast("Account created successfully! Check your email.");
+            });
 
-            const googleLoginBtn = document.getElementById('googleLoginBtn');
-            if (googleLoginBtn) {
-                googleLoginBtn.addEventListener('click', async () => {
-                    await supabaseClient.auth.signInWithOAuth({
-                        provider: 'google',
-                        options: { redirectTo: SITE_URL }
-                    });
+            // Partner login
+            document.getElementById("partner-login-form")?.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const partnerId = document.getElementById("login-partner-id").value;
+                const res = await fetch(`${RENDER_BACKEND_URL}/api/partner/login`, {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ partner_id: partnerId })
                 });
-            }
+                const result = await res.json();
+                if (res.ok) {
+                    currentPartner = { partner_id: result.partner_id, store_name: result.store_name };
+                    document.getElementById("p-store-name").value = result.store_name;
+                    document.getElementById("partner-store-heading").textContent = `${result.store_name} Dashboard`;
+                    loadPartnerOrders(result.store_name);
+                    switchPage('partner-dashboard');
+                } else {
+                    document.getElementById("partner-login-msg").textContent = result.detail || "Login failed.";
+                }
+            });
 
-            const partnerLoginForm = document.getElementById("partner-login-form");
-            if (partnerLoginForm) {
-                partnerLoginForm.addEventListener("submit", async (e) => {
-                    e.preventDefault();
-                    const partnerId = document.getElementById("login-partner-id").value;
-                    const msg = document.getElementById("partner-login-msg");
-                    msg.textContent = "Authenticating partner...";
+            // Partner product upload
+            document.getElementById("partner-product-form")?.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                if (!currentPartner) return switchPage('partner-login');
+                const formData = new FormData();
+                formData.append("partner_id", currentPartner.partner_id);
+                formData.append("store_name", currentPartner.store_name);
+                formData.append("item_name", document.getElementById("p-item-name").value);
+                formData.append("description", document.getElementById("p-description").value);
+                formData.append("price", document.getElementById("p-price").value);
+                formData.append("category", document.getElementById("p-category").value);
+                formData.append("file", document.getElementById("p-image-file").files[0]);
 
-                    try {
-                        const response = await fetch(`${RENDER_BACKEND_URL}/api/partner/login`, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ partner_id: partnerId })
-                        });
-                        const result = await response.json();
+                const res = await fetch(`${RENDER_BACKEND_URL}/api/partner/products`, { method: "POST", body: formData });
+                if (res.ok) {
+                    showToast("Product submitted for Admin approval! 🚀");
+                    document.getElementById("partner-product-form").reset();
+                    document.getElementById("p-store-name").value = currentPartner.store_name;
+                } else {
+                    showToast("Failed to upload product.", "❌");
+                }
+            });
 
-                        if (response.ok) {
-                            currentPartner = { partner_id: result.partner_id, store_name: result.store_name };
-                            msg.style.color = "#16a34a";
-                            msg.textContent = `Welcome back, ${result.store_name}! Redirecting...`;
-                            document.getElementById("p-store-name").value = result.store_name;
-                            loadPartnerOrders(result.store_name);
-                            setTimeout(() => switchPage('partner-dashboard'), 1000);
-                        } else {
-                            msg.style.color = "#dc2626";
-                            msg.textContent = result.detail || "Login failed.";
-                        }
-                    } catch (err) {
-                        msg.style.color = "#dc2626";
-                        msg.textContent = "Network error connecting to backend.";
-                    }
+            // Corporate Inquiry Form
+            document.getElementById("corporate-form")?.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const res = await fetch(`${RENDER_BACKEND_URL}/api/corporate/inquiry`, {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name: document.getElementById('corp-name').value,
+                        email: document.getElementById('corp-email').value,
+                        quantity_required: document.getElementById('corp-qty').value
+                    })
                 });
-            }
+                if (res.ok) { showToast("Corporate quote inquiry sent! 🎉"); document.getElementById("corporate-form").reset(); }
+            });
 
-            const orderForm = document.getElementById("order-form");
-            if (orderForm) {
-                orderForm.addEventListener("submit", (e) => {
-                    e.preventDefault();
-                    const item = {
-                        product_id: document.getElementById("modal-product-id").value,
-                        store_name: document.getElementById("modal-store-input").value,
-                        item_name: document.getElementById("modal-name-input").value,
-                        recipient_name: document.getElementById("recipient-name").value,
-                        delivery_address: document.getElementById("delivery-address").value,
-                        gift_message: document.getElementById("gift-message").value,
-                        sender_name: document.getElementById("sender-name").value,
-                        sender_email: currentUser ? currentUser.email : "guest@tokens.in",
-                        price: parseFloat(document.getElementById("modal-price-input").value),
-                        quantity: 1
-                    };
-
-                    cart.push(item);
-                    updateCartUI();
-                    closeModal();
-                    orderForm.reset();
-                    showToast("Added item to cart! 🛒");
-                    toggleCart();
+            // Onboard Form
+            document.getElementById("onboard-form")?.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const res = await fetch(`${RENDER_BACKEND_URL}/api/partners/onboard`, {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        store_name: document.getElementById('store-name').value,
+                        founder_name: document.getElementById('store-founder').value,
+                        email: document.getElementById('store-email').value,
+                        phone: document.getElementById('store-phone').value,
+                        category: document.getElementById('store-category').value,
+                        store_link: ""
+                    })
                 });
-            }
-
-            const partnerProductForm = document.getElementById("partner-product-form");
-            if (partnerProductForm) {
-                partnerProductForm.addEventListener("submit", async (e) => {
-                    e.preventDefault();
-                    if (!currentPartner) {
-                        showToast("Please log in with your Partner ID first!", "⚠️");
-                        switchPage('partner-login');
-                        return;
-                    }
-
-                    const btn = document.getElementById("p-submit-btn");
-                    const status = document.getElementById("p-status");
-                    btn.textContent = "Uploading & Publishing...";
-
-                    const formData = new FormData();
-                    formData.append("partner_id", currentPartner.partner_id);
-                    formData.append("store_name", currentPartner.store_name);
-                    formData.append("item_name", document.getElementById("p-item-name").value);
-                    formData.append("description", document.getElementById("p-description").value);
-                    formData.append("price", document.getElementById("p-price").value);
-                    formData.append("category", document.getElementById("p-category").value);
-                    formData.append("file", document.getElementById("p-image-file").files[0]);
-
-                    try {
-                        const response = await fetch(`${RENDER_BACKEND_URL}/api/partner/products`, {
-                            method: "POST",
-                            body: formData
-                        });
-                        const result = await response.json();
-                        status.classList.remove("hidden");
-                        if (response.ok) {
-                            status.textContent = "Product published successfully under your store! 🎉";
-                            partnerProductForm.reset();
-                            document.getElementById("p-store-name").value = currentPartner.store_name;
-                            setTimeout(() => {
-                                status.classList.add("hidden");
-                                switchPage('catalog');
-                                loadProductsCatalog();
-                            }, 2000);
-                        } else {
-                            status.textContent = "Error: " + (result.detail || "Failed to list product.");
-                        }
-                    } catch (err) {
-                        status.classList.remove("hidden");
-                        status.textContent = "Network error connecting to backend.";
-                    }
-                    btn.textContent = "Publish Product to Catalog 🚀";
-                });
-            }
-
-            const corpForm = document.getElementById("corporate-form");
-            if (corpForm) {
-                corpForm.addEventListener("submit", async (e) => {
-                    e.preventDefault();
-                    const btn = document.getElementById("corp-submit-btn");
-                    const status = document.getElementById("corp-status");
-                    btn.textContent = "Sending Inquiry...";
-
-                    try {
-                        const response = await fetch(`${RENDER_BACKEND_URL}/api/corporate/inquiry`, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                name: document.getElementById('corp-name').value,
-                                email: document.getElementById('corp-email').value,
-                                quantity_required: document.getElementById('corp-qty').value
-                            })
-                        });
-                        const result = await response.json();
-                        status.classList.remove("hidden");
-                        if (response.ok) {
-                            status.textContent = "Corporate inquiry sent successfully! 🎉";
-                            corpForm.reset();
-                        } else {
-                            status.textContent = "Error: " + (result.detail || "Failed to submit inquiry.");
-                        }
-                    } catch (err) {
-                        status.classList.remove("hidden");
-                        status.textContent = "Network error connecting to backend.";
-                    }
-                    btn.textContent = "Get Bulk Quote";
-                });
-            }
-
-            const onboardForm = document.getElementById("onboard-form");
-            if(onboardForm) {
-                onboardForm.addEventListener("submit", async (e) => {
-                    e.preventDefault();
-                    const btn = document.getElementById("onboard-submit-btn");
-                    const status = document.getElementById("onboard-status");
-                    btn.textContent = "Registering Store...";
-
-                    try {
-                        const response = await fetch(`${RENDER_BACKEND_URL}/api/partners/onboard`, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                store_name: document.getElementById('store-name').value,
-                                founder_name: document.getElementById('store-founder').value,
-                                email: document.getElementById('store-email').value,
-                                phone: document.getElementById('store-phone').value,
-                                category: document.getElementById('store-category').value,
-                                store_link: ""
-                            })
-                        });
-                        const result = await response.json();
-                        status.classList.remove("hidden");
-                        if (response.ok) {
-                            status.textContent = "Partner store registered successfully! 🎉";
-                            onboardForm.reset();
-                        } else {
-                            status.textContent = "Error submitting application.";
-                        }
-                    } catch(err) {
-                        status.classList.remove("hidden");
-                        status.textContent = "Server connection failed.";
-                    }
-                    btn.textContent = "Submit Partner Application 🚀";
-                });
-            }
+                if (res.ok) { showToast("Partner application submitted successfully! 🚀"); document.getElementById("onboard-form").reset(); }
+            });
         });
 
         function updateAuthButtonUI() {
-            const navBtn = document.getElementById('nav-auth-btn');
+            const btn = document.getElementById('nav-auth-btn');
             const mobileBtn = document.getElementById('mobile-auth-btn');
             if (currentUser) {
-                if (navBtn) navBtn.textContent = "Dashboard 👤";
+                if (btn) btn.textContent = "Dashboard 👤";
                 if (mobileBtn) mobileBtn.textContent = "Dashboard 👤";
+            } else {
+                if (btn) btn.textContent = "Log In";
+                if (mobileBtn) mobileBtn.textContent = "Log In / Sign Up";
             }
         }
 
@@ -1023,18 +865,15 @@
             cart = [];
             updateCartUI();
             toggleDashboard();
-            const navBtn = document.getElementById('nav-auth-btn');
-            const mobileBtn = document.getElementById('mobile-auth-btn');
-            if (navBtn) navBtn.textContent = "Log In";
-            if (mobileBtn) mobileBtn.textContent = "Log In / Sign Up";
+            updateAuthButtonUI();
             switchPage('home');
+            showToast("Logged out successfully.", "👋");
         }
 
         function updateCartUI() {
             const container = document.getElementById('cart-items-container');
             const subtotalElem = document.getElementById('cart-subtotal');
             const badge = document.getElementById('cart-badge');
-            
             badge.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
 
             if (cart.length === 0) {
@@ -1059,181 +898,107 @@
             subtotalElem.textContent = `₹${total}`;
         }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-        }
+        function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
 
         function addGeneralToCart(id, store, name, price) {
-            const item = {
-                product_id: id,
-                store_name: store,
-                item_name: name,
-                recipient_name: "Direct Recipient",
-                delivery_address: "Standard Campus/Hostel Address",
+            cart.push({
+                product_id: id, store_name: store, item_name: name,
+                recipient_name: "Direct Recipient", delivery_address: "Standard Campus Address",
                 gift_message: "General Gifting Order",
-                sender_name: currentUser && currentUser.user_metadata ? (currentUser.user_metadata.display_name || "Customer") : "Customer",
+                sender_name: currentUser?.user_metadata?.full_name || "Customer",
                 sender_email: currentUser ? currentUser.email : "guest@tokens.in",
-                price: parseFloat(price),
-                quantity: 1
-            };
-            cart.push(item);
+                price: parseFloat(price), quantity: 1
+            });
             updateCartUI();
             showToast(`Added ${name} to cart! 🛒`);
             toggleCart();
         }
 
         async function proceedToCheckout() {
-            if (cart.length === 0) {
-                showToast("Your cart is empty!", "⚠️");
-                return;
-            }
-            if (!currentUser) {
-                showToast("Please log in to complete your checkout.", "🔒");
-                switchPage('auth');
-                toggleCart();
-                return;
-            }
+            if (cart.length === 0) { showToast("Your cart is empty!", "⚠️"); return; }
+            if (!currentUser) { showToast("Please log in to checkout.", "🔒"); switchPage('auth'); toggleCart(); return; }
 
             const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
             try {
                 const orderRes = await fetch(`${RENDER_BACKEND_URL}/api/create-payment-order`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    method: "POST", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ amount: totalAmount })
                 });
                 const orderData = await orderRes.json();
-                
-                if (!orderRes.ok) {
-                    throw new Error(orderData.detail || "Failed to initialize payment gateway.");
-                }
+                if (!orderRes.ok) throw new Error(orderData.detail || "Payment gateway init failed.");
 
                 const options = {
-                    "key": orderData.key_id,
-                    "amount": orderData.amount,
-                    "currency": "INR",
-                    "name": "Tokens Gifting Platform",
-                    "description": "Express Local Delivery Order",
+                    "key": orderData.key_id, "amount": orderData.amount, "currency": "INR",
+                    "name": "Tokens Gifting Platform", "description": "Express Local Delivery Order",
                     "order_id": orderData.order_id,
                     "handler": async function (response) {
                         try {
                             const verifyRes = await fetch(`${RENDER_BACKEND_URL}/api/verify-payment`, {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
+                                method: "POST", headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({
                                     razorpay_order_id: response.razorpay_order_id,
                                     razorpay_payment_id: response.razorpay_payment_id,
                                     razorpay_signature: response.razorpay_signature
                                 })
                             });
-                            const verifyData = await verifyRes.json();
-                            if (!verifyRes.ok || !verifyData.success) {
-                                throw new Error("Payment signature verification failed.");
-                            }
+                            if (!verifyRes.ok) throw new Error("Payment verification failed.");
 
                             for (const item of cart) {
-                                const saveRes = await fetch(`${RENDER_BACKEND_URL}/api/orders`, {
-                                    method: "POST",
-                                    headers: { "Content-Type": "application/json" },
+                                await fetch(`${RENDER_BACKEND_URL}/api/orders`, {
+                                    method: "POST", headers: { "Content-Type": "application/json" },
                                     body: JSON.stringify(item)
                                 });
-                                const saveResult = await saveRes.json();
-                                if (!saveRes.ok) {
-                                    throw new Error(saveResult.detail || "Failed to save order item.");
-                                }
                             }
-                            showToast("Payment verified successfully! 🎉 Order placed.", "🚀");
+                            showToast("Payment verified! Order placed successfully 🎉", "🚀");
                             cart = [];
                             updateCartUI();
                             toggleCart();
-                        } catch (saveErr) {
-                            showToast("Checkout error: " + saveErr.message, "❌");
-                        }
+                        } catch (err) { showToast("Checkout save error: " + err.message, "❌"); }
                     },
                     "prefill": { "email": currentUser.email },
                     "theme": { "color": "#db2777" }
                 };
-
-                const rzp = new Razorpay(options);
-                rzp.open();
-
-            } catch (err) {
-                showToast("Checkout failed: " + err.message, "❌");
-            }
+                new Razorpay(options).open();
+            } catch (err) { showToast("Checkout failed: " + err.message, "❌"); }
         }
 
+        // --- USER DASHBOARD ORDERS LIST ---
         async function fetchUserOrders(email) {
             const container = document.getElementById('dashboard-orders-list');
             const totalOrdersStat = document.getElementById('stat-total-orders');
-            
             try {
                 const response = await fetch(`${RENDER_BACKEND_URL}/api/orders?email=${encodeURIComponent(email)}`);
                 const result = await response.json();
-                
                 if (result.data && result.data.length > 0) {
                     totalOrdersStat.textContent = result.data.length;
-                    
-                    container.innerHTML = result.data.map(order => {
-                        const status = (order.status || 'Pending').toLowerCase();
-                        
-                        let badgeClass = "bg-amber-100 text-amber-800 border-amber-200";
-                        let statusIcon = "⏳";
-                        let userMessage = "Order received. Preparing confirmation with local partner.";
-                        
-                        if (status.includes('ready')) {
-                            badgeClass = "bg-blue-100 text-blue-800 border-blue-200";
-                            statusIcon = "📦";
-                            userMessage = "Gift is packaged and ready for local dispatch!";
-                        } else if (status.includes('out') || status.includes('dispatch') || status.includes('delivery')) {
-                            badgeClass = "bg-emerald-100 text-emerald-800 border-emerald-200";
-                            statusIcon = "🚀";
-                            userMessage = "Out for express delivery to your recipient!";
-                        }
-
-                        return `
-                            <div class="p-4 border border-gray-100 rounded-2xl bg-gray-50/70 hover:bg-gray-50 transition space-y-2">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <p class="font-bold text-gray-900 text-sm">${order.item_name}</p>
-                                        <p class="text-xs text-gray-500 mt-0.5">To: <span class="font-medium text-gray-700">${order.recipient_name}</span> • <span class="text-brandPink font-bold">₹${order.price}</span></p>
-                                    </div>
-                                    <span class="text-[11px] px-3 py-1 rounded-full font-bold border flex items-center space-x-1 ${badgeClass}">
-                                        <span>${statusIcon}</span>
-                                        <span class="capitalize">${order.status || 'Pending'}</span>
-                                    </span>
+                    container.innerHTML = result.data.map(order => `
+                        <div class="p-4 border rounded-2xl bg-gray-50 space-y-2">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="font-bold text-gray-900 text-sm">${order.item_name}</p>
+                                    <p class="text-xs text-gray-500">To: ${order.recipient_name} • <span class="text-brandPink font-bold">₹${order.price}</span></p>
                                 </div>
-                                <div class="bg-white/80 p-2.5 rounded-xl border border-gray-100 text-[11px] text-gray-600 flex items-center justify-between">
-                                    <span>💡 <b>Status Update:</b> ${userMessage}</span>
-                                    <span class="text-gray-400 text-[10px]">Store: ${order.store_name}</span>
-                                </div>
+                                <span class="text-[11px] px-3 py-1 rounded-full font-bold bg-amber-100 text-amber-800">${order.status || 'Pending'}</span>
                             </div>
-                        `;
-                    }).join('');
+                        </div>
+                    `).join('');
                 } else {
                     totalOrdersStat.textContent = "0";
-                    container.innerHTML = `
-                        <div class="text-center py-10 space-y-2 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-                            <span class="text-3xl">🎁</span>
-                            <p class="text-xs font-bold text-gray-700">No past orders found</p>
-                            <p class="text-[11px] text-gray-400">Your recent gift purchases and tracking updates will appear here.</p>
-                        </div>`;
+                    container.innerHTML = `<p class="text-xs text-gray-400 text-center py-6">No past orders found.</p>`;
                 }
-            } catch (err) {
-                container.innerHTML = `<p class="text-xs text-red-500 text-center py-6 font-semibold">Failed to load order history.</p>`;
-            }
+            } catch (err) { container.innerHTML = `<p class="text-xs text-red-500 text-center py-6">Failed to load orders.</p>`; }
         }
 
+        // --- PARTNER STORE DASHBOARD ORDERS & STATUS MANAGEMENT ---
         async function loadPartnerOrders(storeName) {
             const container = document.getElementById('partner-orders-container');
             if (!container) return;
             try {
-                const response = await fetch(`${RENDER_BACKEND_URL}/api/partner/orders?store_name=${encodeURIComponent(storeName)}`);
-                const result = await response.json();
-                
+                const res = await fetch(`${RENDER_BACKEND_URL}/api/partner/orders?store_name=${encodeURIComponent(storeName)}`);
+                const result = await res.json();
                 if (result.data && result.data.length > 0) {
                     container.innerHTML = result.data.map(order => `
-                        <div class="p-5 border border-gray-100 rounded-2xl bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div class="p-5 border rounded-2xl bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <div>
                                 <p class="font-bold text-gray-900 text-sm">${order.item_name}</p>
                                 <p class="text-xs text-gray-600 mt-0.5">Recipient: <b>${order.recipient_name}</b> • Address: ${order.delivery_address}</p>
@@ -1242,9 +1007,9 @@
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="text-xs font-bold px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full">${order.status || 'Pending Dispatch'}</span>
                                 <div class="flex gap-1">
-                                    <button onclick="updateOrderStatus('${order.id}', 'Pending Dispatch', '${storeName}')" class="bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-gray-300 transition">Pending</button>
-                                    <button onclick="updateOrderStatus('${order.id}', 'Ready to Dispatch', '${storeName}')" class="bg-blue-100 text-blue-700 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-blue-200 transition">Ready</button>
-                                    <button onclick="updateOrderStatus('${order.id}', 'Out for Delivery', '${storeName}')" class="bg-green-100 text-green-700 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-green-200 transition">Dispatched</button>
+                                    <button onclick="updateOrderStatus('${order.id}', 'Pending Dispatch', '${storeName}')" class="bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-gray-300">Pending</button>
+                                    <button onclick="updateOrderStatus('${order.id}', 'Ready to Dispatch', '${storeName}')" class="bg-blue-100 text-blue-700 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-blue-200">Ready</button>
+                                    <button onclick="updateOrderStatus('${order.id}', 'Out for Delivery', '${storeName}')" class="bg-green-100 text-green-700 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-green-200">Dispatched</button>
                                 </div>
                             </div>
                         </div>
@@ -1252,141 +1017,76 @@
                 } else {
                     container.innerHTML = `<p class="text-xs text-gray-400">No orders received for your store yet.</p>`;
                 }
-            } catch (err) {
-                container.innerHTML = `<p class="text-xs text-red-500">Failed to load store orders.</p>`;
-            }
+            } catch (err) { container.innerHTML = `<p class="text-xs text-red-500">Failed to load store orders.</p>`; }
         }
 
         async function updateOrderStatus(orderId, newStatus, storeName) {
             try {
                 const response = await fetch(`${RENDER_BACKEND_URL}/api/partner/orders/${orderId}/status`, {
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
+                    method: "PATCH", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ status: newStatus })
                 });
-                const result = await response.json();
-                
                 if (response.ok) {
                     showToast(`Order status updated to: ${newStatus}`);
                     loadPartnerOrders(storeName);
                 } else {
                     showToast("Failed to update status.", "❌");
                 }
-            } catch (err) {
-                showToast("Network error updating status.", "❌");
-            }
+            } catch (err) { showToast("Network error updating status.", "❌"); }
         }
 
         async function loadProductsCatalog() {
             const grid = document.getElementById("product-grid");
             try {
-                const response = await fetch(`${RENDER_BACKEND_URL}/api/products`);
-                const result = await response.json();
-                
-                if (response.ok && result.data && result.data.length > 0) {
+                const res = await fetch(`${RENDER_BACKEND_URL}/api/products`);
+                const result = await res.json();
+                if (res.ok && result.data) {
                     allProducts = result.data;
                     renderProducts(allProducts);
                 }
             } catch (err) {
-                console.error("Failed to load catalog:", err);
-                grid.innerHTML = `<div class="text-center py-12 col-span-3 text-red-500">Could not connect to backend server to load catalog.</div>`;
+                grid.innerHTML = `<div class="text-center py-12 col-span-3 text-red-500">Failed to load catalog.</div>`;
             }
         }
 
-        function renderProducts(productsToRender) {
+        function renderProducts(products) {
             const grid = document.getElementById("product-grid");
-            if (productsToRender.length === 0) {
-                grid.innerHTML = `<div class="text-center py-12 col-span-3 text-gray-400 font-medium">No products found matching this filter.</div>`;
+            if (products.length === 0) {
+                grid.innerHTML = `<div class="text-center py-12 col-span-3 text-gray-400">No approved products available right now.</div>`;
                 return;
             }
-
-            grid.innerHTML = productsToRender.map(prod => {
-                const cat = (prod.category || '').toLowerCase();
-                const isPersonalized = cat.includes('personalized');
-                
+            grid.innerHTML = products.map(prod => {
+                const isPersonalized = (prod.category || '').toLowerCase().includes('personalized');
                 const actionCall = isPersonalized 
                     ? `openPersonalizationModal('${prod.id}', '${prod.store_name}', '${prod.item_name}', ${prod.price})` 
                     : `addGeneralToCart('${prod.id}', '${prod.store_name}', '${prod.item_name}', ${prod.price})`;
                 
-                const btnText = isPersonalized ? "Customize ✨" : "Add to Cart 🛒";
-
                 return `
-                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition duration-300 flex flex-col justify-between group overflow-hidden relative">
-                        ${isPersonalized ? '<span class="absolute top-4 left-4 z-10 bg-brandPink text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md animate-pulse">PERSONALISE IT!</span>' : ''}
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border hover:shadow-xl transition flex flex-col justify-between">
                         <div>
-                            <div class="overflow-hidden rounded-2xl mb-4 bg-gray-50 aspect-square flex items-center justify-center">
-                                <img src="${prod.image_url || 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=500'}" alt="${prod.item_name}" loading="lazy" class="w-full h-48 object-cover group-hover:scale-105 transition duration-500">
-                            </div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="bg-pink-50 text-brandPink font-bold text-xs px-3 py-1 rounded-lg">${prod.store_name}</span>
-                                <span class="text-xs text-green-600 font-semibold bg-green-50 px-2.5 py-1 rounded-lg">⚡ Fast Delivery</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 group-hover:text-brandPink transition mt-2">${prod.item_name}</h3>
-                            <p class="text-sm text-gray-500 mt-2 mb-6 line-clamp-2">${prod.description || 'Curated boutique gift item.'}</p>
+                            <img src="${prod.image_url}" class="w-full h-48 object-cover rounded-2xl mb-4">
+                            <span class="bg-pink-50 text-brandPink font-bold text-xs px-3 py-1 rounded-lg">${prod.store_name}</span>
+                            <h3 class="text-xl font-bold mt-2">${prod.item_name}</h3>
+                            <p class="text-sm text-gray-500 mt-1 line-clamp-2">${prod.description}</p>
                         </div>
-                        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                            <span class="text-lg font-black text-gray-900">₹${prod.price}</span>
-                            <button onclick="${actionCall}" class="bg-brandPink text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-md shadow-brandPink/20 hover:bg-pink-700 transition">
-                                ${btnText}
-                            </button>
+                        <div class="flex items-center justify-between pt-4 border-t mt-4">
+                            <span class="text-lg font-black">₹${prod.price}</span>
+                            <button onclick="${actionCall}" class="bg-brandPink text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md">${isPersonalized ? "Customize ✨" : "Add to Cart 🛒"}</button>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        function filterCatalog(categoryType) {
-            ['all', 'personalized', 'general'].forEach(type => {
-                const btn = document.getElementById(`filter-${type}`);
-                if (btn) {
-                    btn.className = "flex-shrink-0 px-5 py-2 rounded-full text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition";
-                }
+        function filterCatalog(type) {
+            ['all', 'personalized', 'general'].forEach(t => {
+                document.getElementById(`filter-${t}`)?.classList.remove('bg-brandPink', 'text-white', 'shadow-md');
+                document.getElementById(`filter-${t}`)?.classList.add('bg-gray-100', 'text-gray-700');
             });
+            document.getElementById(`filter-${type.toLowerCase()}`)?.classList.add('bg-brandPink', 'text-white', 'shadow-md');
 
-            const activeBtn = document.getElementById(`filter-${categoryType.toLowerCase()}`);
-            if (activeBtn) {
-                activeBtn.className = "flex-shrink-0 px-5 py-2 rounded-full text-xs font-bold bg-brandPink text-white shadow-md transition";
-            }
-
-            const personalizedSubSec = document.getElementById("personalized-subcategories-section");
-            const generalSubSec = document.getElementById("general-subcategories-section");
-
-            if (categoryType === 'Personalized') {
-                personalizedSubSec.classList.remove('hidden');
-                generalSubSec.classList.add('hidden');
-            } else if (categoryType === 'General') {
-                personalizedSubSec.classList.add('hidden');
-                generalSubSec.classList.remove('hidden');
-            } else {
-                personalizedSubSec.classList.add('hidden');
-                generalSubSec.classList.add('hidden');
-            }
-
-            if (categoryType === 'all') {
-                renderProducts(allProducts);
-            } else {
-                const filtered = allProducts.filter(p => p.category && p.category.toLowerCase().includes(categoryType.toLowerCase()));
-                renderProducts(filtered);
-            }
-        }
-
-        function filterBySubcategory(subKeyword, btnElement) {
-            switchPage('catalog');
-            document.querySelectorAll('.subcat-btn div').forEach(el => {
-                el.classList.remove('border-brandPink', 'ring-2', 'ring-brandPink/40', 'scale-105', 'shadow-md');
-            });
-            if (btnElement) {
-                const iconDiv = btnElement.querySelector('div');
-                if (iconDiv) {
-                    iconDiv.classList.add('border-brandPink', 'ring-2', 'ring-brandPink/40', 'scale-105', 'shadow-md');
-                }
-            }
-
-            const filtered = allProducts.filter(p => 
-                (p.item_name && p.item_name.toLowerCase().includes(subKeyword.toLowerCase())) || 
-                (p.description && p.description.toLowerCase().includes(subKeyword.toLowerCase()))
-            );
-            renderProducts(filtered);
+            if (type === 'all') renderProducts(allProducts);
+            else renderProducts(allProducts.filter(p => p.category && p.category.toLowerCase().includes(type.toLowerCase())));
         }
 
         function openPersonalizationModal(id, store, name, price) {
@@ -1394,24 +1094,30 @@
             document.getElementById("modal-store-input").value = store;
             document.getElementById("modal-name-input").value = name;
             document.getElementById("modal-price-input").value = price;
-            
             document.getElementById("modal-product-title").textContent = name;
-            document.getElementById("modal-store-name").textContent = `Partner: ${store} • ₹${price}`;
-            
-            if (currentUser && currentUser.user_metadata) {
-                const defaultName = currentUser.user_metadata.display_name || currentUser.user_metadata.full_name || "";
-                const senderInput = document.getElementById("sender-name");
-                if (senderInput && defaultName) {
-                    senderInput.value = defaultName;
-                }
-            }
-
             document.getElementById("personalization-modal").classList.remove("hidden");
         }
+        function closeModal() { document.getElementById("personalization-modal").classList.add("hidden"); }
 
-        function closeModal() {
-            document.getElementById("personalization-modal").classList.add("hidden");
-        }
+        document.getElementById('order-form')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            cart.push({
+                product_id: document.getElementById("modal-product-id").value,
+                store_name: document.getElementById("modal-store-input").value,
+                item_name: document.getElementById("modal-name-input").value,
+                recipient_name: document.getElementById("recipient-name").value,
+                delivery_address: document.getElementById("delivery-address").value,
+                gift_message: document.getElementById("gift-message").value,
+                sender_name: document.getElementById("sender-name").value,
+                sender_email: currentUser ? currentUser.email : "guest@tokens.in",
+                price: parseFloat(document.getElementById("modal-price-input").value),
+                quantity: 1
+            });
+            updateCartUI();
+            closeModal();
+            showToast("Added item to cart! 🛒");
+            toggleCart();
+        });
     </script>
 </body>
 </html>
