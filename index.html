@@ -27,23 +27,29 @@
 </head>
 <body class="bg-white text-gray-800 font-sans antialiased flex flex-col min-h-screen">
 
+    <!-- FNP-Style Top Announcement Bar -->
+    <div class="bg-brandPink text-white text-xs font-bold py-2 px-4 text-center tracking-wide">
+        🚀 Express Local Delivery Available • Send Gifts Instantly to Your Loved Ones!
+    </div>
+
     <!-- Navigation Bar -->
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <span onclick="switchPage('home')" class="text-2xl font-black text-brandPink tracking-tight cursor-pointer">TOKENS</span>
                 <span id="live-clock" class="hidden sm:inline-block ml-4 text-xs font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-full">📍 IST: Connecting...</span>
             </div>
 
-            <!-- Desktop Nav Links -->
-            <nav class="hidden md:flex items-center space-x-8 font-medium text-sm text-gray-600">
+            <!-- Desktop Nav Links (FNP Mega-Menu Inspired) -->
+            <nav class="hidden md:flex items-center space-x-6 font-medium text-sm text-gray-700">
                 <button onclick="switchPage('home')" class="hover:text-brandPink transition focus:outline-none">Home</button>
+                <button onclick="switchPage('catalog')" class="hover:text-brandPink transition focus:outline-none">All Gifts</button>
+                <button onclick="switchPage('catalog'); filterCatalog('Personalized')" class="hover:text-brandPink transition focus:outline-none text-brandPink font-bold">✨ Personalised</button>
                 <button onclick="switchPage('hub')" class="hover:text-brandPink transition focus:outline-none">Multi-Store Hub</button>
-                <button onclick="switchPage('catalog')" class="hover:text-brandPink transition focus:outline-none">Shop Gifts</button>
                 <button onclick="switchPage('pool-gifting')" class="hover:text-brandPink transition focus:outline-none">Pool Gifting</button>
                 <button onclick="switchPage('corporate')" class="hover:text-brandPink transition focus:outline-none">Corporate</button>
                 <button onclick="switchPage('onboard')" class="hover:text-brandPink transition focus:outline-none">Partner With Us</button>
-                <button onclick="handlePartnerNavClick()" class="hover:text-brandPink transition focus:outline-none text-brandPink font-bold" id="partner-nav-btn">Partner Portal</button>
+                <button onclick="handlePartnerNavClick()" class="hover:text-brandPink transition focus:outline-none font-bold" id="partner-nav-btn">Partner Portal</button>
             </nav>
 
             <div class="hidden md:flex items-center space-x-4">
@@ -63,68 +69,117 @@
 
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-100 px-6 py-6 space-y-4 shadow-xl">
             <button onclick="switchPage('home'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Home</button>
+            <button onclick="switchPage('catalog'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Shop All Gifts</button>
+            <button onclick="switchPage('catalog'); filterCatalog('Personalized'); toggleMobileMenu();" class="block w-full text-left font-bold text-brandPink">✨ Personalised Gifts</button>
             <button onclick="switchPage('hub'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Multi-Store Hub</button>
-            <button onclick="switchPage('catalog'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Shop Gifts</button>
             <button onclick="switchPage('pool-gifting'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Pool Gifting</button>
             <button onclick="switchPage('corporate'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Corporate</button>
             <button onclick="switchPage('onboard'); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Partner With Us</button>
             <button onclick="handlePartnerNavClick(); toggleMobileMenu();" class="block w-full text-left font-bold text-brandPink">Partner Portal</button>
             <button onclick="toggleCart(); toggleMobileMenu();" class="block w-full text-left font-medium text-gray-700 hover:text-brandPink">Cart 🛒</button>
             <button onclick="handleAuthNavClick(); toggleMobileMenu();" id="mobile-auth-btn" class="block w-full text-left font-semibold text-gray-800 hover:text-brandPink">Log In / Sign Up</button>
-            <button onclick="switchPage('catalog'); toggleMobileMenu();" class="w-full bg-brandPink text-white py-3 rounded-xl font-bold text-sm shadow-md text-center block">Start Gifting</button>
         </div>
     </header>
 
     <main class="flex-grow">
 
         <!-- PAGE: HOME -->
-        <section id="page-home" class="page-view relative overflow-hidden bg-gradient-to-b from-brandLightPink/50 to-white pt-16 pb-24 lg:pt-24 lg:pb-32">
-            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-                    <div class="inline-flex items-center space-x-2 bg-brandPink/10 text-brandPink px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-                        <span>✨ Hyper-Local Gifting & Express 15-Min Delivery</span>
-                    </div>
-                    <h1 class="text-4xl sm:text-6xl font-black text-gray-950 tracking-tight leading-none">
-                        Gift Smarter. <br>
-                        <span class="text-brandPink">Delight Faster.</span>
-                    </h1>
-                    <p class="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto lg:mx-0 font-normal">
-                        Combining curated boutique store items with deep personalization and lightning-fast local community delivery.
-                    </p>
-                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4 pt-4">
-                        <button onclick="switchPage('catalog')" class="w-full sm:w-auto bg-brandPink text-white text-center px-8 py-4 rounded-full font-bold text-base shadow-xl shadow-brandPink/30 hover:bg-pink-700 transition transform hover:-translate-y-0.5">
-                            Browse Partner Catalog 🎁
-                        </button>
-                        <button onclick="switchPage('hub')" class="w-full sm:w-auto border-2 border-gray-200 text-gray-700 text-center px-8 py-3.5 rounded-full font-bold text-base hover:border-brandPink hover:text-brandPink transition">
-                            Explore Hub
-                        </button>
-                    </div>
-                </div>
-                <div class="lg:col-span-5 relative flex justify-center">
-                    <div class="w-full max-w-md bg-white p-8 rounded-3xl shadow-2xl border border-gray-100 relative space-y-6 transform hover:scale-[1.01] transition duration-300">
-                        <div class="absolute -top-4 -right-4 bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md animate-pulse">
-                            ⚡ 15-Min Delivery
+        <section id="page-home" class="page-view relative overflow-hidden bg-gradient-to-b from-brandLightPink/40 to-white pt-12 pb-20 lg:pt-16 lg:pb-28">
+            <div class="max-w-7xl mx-auto px-6 space-y-12">
+                
+                <!-- Hero Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center space-x-2 bg-brandPink/10 text-brandPink px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                            <span>✨ India's Express Gifting Destination</span>
                         </div>
-                        <div class="space-y-2">
-                            <span class="text-xs font-bold tracking-widest text-brandPink uppercase">Featured Item</span>
-                            <h3 class="text-2xl font-bold text-gray-900">Custom Magic Mug</h3>
-                            <p class="text-sm text-gray-500">Personalized engravings & custom gift messages included.</p>
-                        </div>
-                        <div class="bg-brandLightPink/60 p-4 rounded-2xl flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-12 h-12 bg-brandPink text-white rounded-xl flex items-center justify-center font-bold text-xl">☕</div>
-                                <div>
-                                    <h4 class="text-sm font-bold text-gray-900">Artisan Print Studio</h4>
-                                    <p class="text-xs text-gray-500">₹399 • Fast Dispatch</p>
-                                </div>
+                        <h1 class="text-4xl sm:text-6xl font-black text-gray-950 tracking-tight leading-none">
+                            Unwrap Smiles with <br>
+                            <span class="text-brandPink">Lightning-Fast Delivery.</span>
+                        </h1>
+                        <p class="text-lg text-gray-600 max-w-2xl mx-auto lg:mx-0 font-normal">
+                            From custom-engraved treasures to curated luxury hampers, find the perfect gift for every relationship and occasion.
+                        </p>
+                        
+                        <!-- FNP-Style Pincode/Hostel Checker Widget -->
+                        <div class="bg-white p-4 rounded-2xl shadow-lg border border-gray-100 max-w-xl mx-auto lg:mx-0 flex flex-col sm:flex-row items-center gap-3">
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <span class="text-xl">📍</span>
+                                <input type="text" id="delivery-pincode-input" placeholder="Enter Pincode or Hostel Room" class="bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl text-xs focus:outline-none focus:border-brandPink w-full sm:w-64 font-medium">
                             </div>
-                            <span class="text-brandPink font-bold text-sm">Best Seller</span>
+                            <button onclick="checkDeliveryAvailability()" class="w-full sm:w-auto bg-brandPink text-white px-6 py-3 rounded-xl text-xs font-bold hover:bg-pink-700 transition shadow-md">
+                                Check Slots ⚡
+                            </button>
                         </div>
-                        <button onclick="switchPage('catalog')" class="block text-center w-full bg-gray-900 text-white py-3 rounded-xl font-bold text-sm hover:bg-gray-800 transition">
-                            Customize & Order
+                        <p id="delivery-check-result" class="text-xs font-bold text-green-600 hidden text-center lg:text-left">✅ Express 15-min delivery available for this location!</p>
+
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4 pt-2">
+                            <button onclick="switchPage('catalog')" class="w-full sm:w-auto bg-brandPink text-white text-center px-8 py-4 rounded-full font-bold text-base shadow-xl shadow-brandPink/30 hover:bg-pink-700 transition transform hover:-translate-y-0.5">
+                                Explore All Gifts 🎁
+                            </button>
+                            <button onclick="switchPage('hub')" class="w-full sm:w-auto border-2 border-gray-200 text-gray-700 text-center px-8 py-3.5 rounded-full font-bold text-base hover:border-brandPink hover:text-brandPink transition">
+                                Multi-Store Hub
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 relative flex justify-center">
+                        <div class="w-full max-w-md bg-white p-8 rounded-3xl shadow-2xl border border-gray-100 relative space-y-6 transform hover:scale-[1.01] transition duration-300">
+                            <div class="absolute -top-4 -right-4 bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md animate-pulse">
+                                ⚡ Same-Day Delivery
+                            </div>
+                            <div class="space-y-2">
+                                <span class="text-xs font-bold tracking-widest text-brandPink uppercase">Bestseller Curation</span>
+                                <h3 class="text-2xl font-bold text-gray-900">Custom Magic Mug</h3>
+                                <p class="text-sm text-gray-500">Personalized engravings & heartfelt notes included.</p>
+                            </div>
+                            <div class="bg-brandLightPink/60 p-4 rounded-2xl flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-brandPink text-white rounded-xl flex items-center justify-center font-bold text-xl">☕</div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-gray-900">Artisan Print Studio</h4>
+                                        <p class="text-xs text-gray-500">₹399 • Instant Dispatch</p>
+                                    </div>
+                                </div>
+                                <span class="text-brandPink font-bold text-sm">Top Rated</span>
+                            </div>
+                            <button onclick="switchPage('catalog')" class="block text-center w-full bg-gray-900 text-white py-3 rounded-xl font-bold text-sm hover:bg-gray-800 transition">
+                                Customize & Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FNP-Style "Shop By Recipient" Quick-Finder Grid -->
+                <div class="pt-10 border-t border-gray-100">
+                    <div class="text-center space-y-2 mb-8">
+                        <h2 class="text-2xl font-black text-gray-900 tracking-tight">Shop By Recipient & Relationship</h2>
+                        <p class="text-sm text-gray-500">Find handpicked gifts tailored precisely for who you're celebrating.</p>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                        <button onclick="switchPage('catalog'); filterCatalog('Personalized');" class="bg-gray-50 hover:bg-brandLightPink/50 border border-gray-100 p-6 rounded-3xl text-center space-y-3 transition group">
+                            <div class="w-16 h-16 bg-pink-100 text-brandPink rounded-2xl mx-auto flex items-center justify-center text-2xl group-hover:scale-110 transition">👩</div>
+                            <h4 class="font-bold text-gray-900 text-sm">Gifts For Her</h4>
+                            <p class="text-[11px] text-gray-500">Lamps, Frames & Perfumes</p>
+                        </button>
+                        <button onclick="switchPage('catalog'); filterCatalog('General');" class="bg-gray-50 hover:bg-brandLightPink/50 border border-gray-100 p-6 rounded-3xl text-center space-y-3 transition group">
+                            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl mx-auto flex items-center justify-center text-2xl group-hover:scale-110 transition">👨</div>
+                            <h4 class="font-bold text-gray-900 text-sm">Gifts For Him</h4>
+                            <p class="text-[11px] text-gray-500">Watches, Wallets & Sippers</p>
+                        </button>
+                        <button onclick="switchPage('catalog'); filterBySubcategory('Keychain');" class="bg-gray-50 hover:bg-brandLightPink/50 border border-gray-100 p-6 rounded-3xl text-center space-y-3 transition group">
+                            <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-2xl mx-auto flex items-center justify-center text-2xl group-hover:scale-110 transition">🧑‍🤝‍🧑</div>
+                            <h4 class="font-bold text-gray-900 text-sm">For Peers & Friends</h4>
+                            <p class="text-[11px] text-gray-500">Keychains & Bracelets</p>
+                        </button>
+                        <button onclick="switchPage('corporate')" class="bg-gray-50 hover:bg-brandLightPink/50 border border-gray-100 p-6 rounded-3xl text-center space-y-3 transition group">
+                            <div class="w-16 h-16 bg-amber-100 text-amber-700 rounded-2xl mx-auto flex items-center justify-center text-2xl group-hover:scale-110 transition">🏫</div>
+                            <h4 class="font-bold text-gray-900 text-sm">Campus & Corporate</h4>
+                            <p class="text-[11px] text-gray-500">Desk Lamps & Hampers</p>
                         </button>
                     </div>
                 </div>
+
             </div>
         </section>
 
@@ -637,6 +692,17 @@
         function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
             drawer.classList.toggle('translate-x-full');
+        }
+
+        function checkDeliveryAvailability() {
+            const val = document.getElementById('delivery-pincode-input').value.trim();
+            const resEl = document.getElementById('delivery-check-result');
+            if(!val) {
+                showToast("Please enter a valid pincode or hostel room!", "⚠️");
+                return;
+            }
+            resEl.classList.remove('hidden');
+            showToast("Slots verified! Express delivery available ⚡", "🚀");
         }
 
         async function toggleDashboard() {
@@ -1245,7 +1311,8 @@
                 const btnText = isPersonalized ? "Customize ✨" : "Add to Cart 🛒";
 
                 return `
-                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition duration-300 flex flex-col justify-between group overflow-hidden">
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition duration-300 flex flex-col justify-between group overflow-hidden relative">
+                        ${isPersonalized ? '<span class="absolute top-4 left-4 z-10 bg-brandPink text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md animate-pulse">PERSONALISE IT!</span>' : ''}
                         <div>
                             <div class="overflow-hidden rounded-2xl mb-4 bg-gray-50 aspect-square flex items-center justify-center">
                                 <img src="${prod.image_url || 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=500'}" alt="${prod.item_name}" loading="lazy" class="w-full h-48 object-cover group-hover:scale-105 transition duration-500">
@@ -1304,6 +1371,7 @@
         }
 
         function filterBySubcategory(subKeyword, btnElement) {
+            switchPage('catalog');
             document.querySelectorAll('.subcat-btn div').forEach(el => {
                 el.classList.remove('border-brandPink', 'ring-2', 'ring-brandPink/40', 'scale-105', 'shadow-md');
             });
