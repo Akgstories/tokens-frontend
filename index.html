@@ -188,7 +188,7 @@
   <div id="toast" class="toast"></div>
 
 <script>
-const API = "";
+const API_BASE = "http://127.0.0.1:8000";
 let sb = null, session = null, user = null, products = [], activeFilter = "all", cart = [], selectedProduct = null, adminSession = null, partnerSession = null;
 const $ = id => document.getElementById(id);
 const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
