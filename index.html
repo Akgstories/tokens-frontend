@@ -1513,124 +1513,112 @@
             const grid = document.getElementById("product-grid");
             const featuredGrid = document.getElementById("home-featured-grid");
             
+            // Strategy: Try Render backend -> Supabase direct -> Local dev -> Demo fallback
+            let loaded = false;
+
+            // 1) Try Render backend first (production)
             try {
-                // Try active backend
-                let res = await fetch(`${ACTIVE_BACKEND_URL}/api/products`);
-                if (!res.ok && ACTIVE_BACKEND_URL !== RENDER_BACKEND_URL) {
-                    ACTIVE_BACKEND_URL = RENDER_BACKEND_URL;
-                    res = await fetch(`${ACTIVE_BACKEND_URL}/api/products`);
+                const res = await fetch(`${RENDER_BACKEND_URL}/api/products`, { signal: AbortSignal.timeout(12000) });
+                if (res.ok) {
+                    const result = await res.json();
+                    if (result.success && result.data && result.data.length > 0) {
+                        ACTIVE_BACKEND_URL = RENDER_BACKEND_URL;
+                        allProducts = result.data;
+                        loaded = true;
+                    }
                 }
-                const result = await res.json();
-                if (result.success && result.data) {
-                    allProducts = result.data;
-                    renderProducts(allProducts);
-                    renderFeaturedGrid(allProducts.slice(0, 3));
-                }
-            } catch (err) {
-                console.warn("Backend fetch failed, using built-in high-quality seed tokens.");
-                if (allProducts.length === 0) {
-                    allProducts = [
-                        {
-                            id: "prod-101",
-                            store_name: "Artisan Print & Engrave",
-                            item_name: "Custom Magic Color-Changing Photo Mug",
-                            description: "Pour hot beverage to reveal your secret picture & custom engraved quote.",
-                            price: 399,
-                            original_price: 599,
-                            category: "Personalized",
-                            occasion: "Birthday, Anniversary, Romance",
-                            recipient: "For Him, For Her, Bestie",
-                            image_url: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop&q=80",
-                            rating: 4.9,
-                            reviews_count: 142,
-                            delivery_speed: "Express 30m ⚡",
-                            status: "approved"
-                        },
-                        {
-                            id: "prod-102",
-                            store_name: "Artisan Print & Engrave",
-                            item_name: "Laser-Engraved Spotify Plaque with LED Stand",
-                            description: "Engrave your favorite song, scannable barcode, couple name & anniversary date on polished oak.",
-                            price: 749,
-                            original_price: 1099,
-                            category: "Personalized",
-                            occasion: "Anniversary, Romance, Friendship",
-                            recipient: "For Him, For Her, Bestie",
-                            image_url: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=600&auto=format&fit=crop&q=80",
-                            rating: 4.8,
-                            reviews_count: 98,
-                            delivery_speed: "Express 45m ⚡",
-                            status: "approved"
-                        },
-                        {
-                            id: "prod-103",
-                            store_name: "Aesthetic Vibes Decor",
-                            item_name: "Warm Glow Moon Night Lamp (16 Colors)",
-                            description: "3D printed rechargeable lunar lamp with wooden stand and soft touch mood lighting.",
-                            price: 649,
-                            original_price: 999,
-                            category: "Aesthetic Decor",
-                            occasion: "Birthday, Housewarming, Romance",
-                            recipient: "For Her, Bestie, Hostel Roommate",
-                            image_url: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80",
-                            rating: 4.7,
-                            reviews_count: 86,
-                            delivery_speed: "Same Day 🚀",
-                            status: "approved"
-                        },
-                        {
-                            id: "prod-104",
-                            store_name: "The Hamper Co.",
-                            item_name: "Royale Gourmet Celebration Hamper",
-                            description: "Curated with Belgian artisan dark chocolates, roasted almonds, scented lavender candle, and brass keepsake box.",
-                            price: 1499,
-                            original_price: 2199,
-                            category: "Hampers",
-                            occasion: "Festivals, Congratulations, Birthday, Corporate",
-                            recipient: "For Parents, For Him, Corporate",
-                            image_url: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&auto=format&fit=crop&q=80",
-                            rating: 5.0,
-                            reviews_count: 64,
-                            delivery_speed: "Express 60m ⚡",
-                            status: "approved"
-                        },
-                        {
-                            id: "prod-105",
-                            store_name: "Bloom & Botanica",
-                            item_name: "Evergreen Jade Plant in Emoji Pot + Wish Card",
-                            description: "Air-purifying good luck Jade plant in designer ceramic pot with customizable miniature wishing chalkboard.",
-                            price: 349,
-                            original_price: 499,
-                            category: "Plants",
-                            occasion: "Friendship, Farewell, New Job, Birthday",
-                            recipient: "Hostel Roommate, Bestie, Colleague",
-                            image_url: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=600&auto=format&fit=crop&q=80",
-                            rating: 4.9,
-                            reviews_count: 110,
-                            delivery_speed: "Express 30m ⚡",
-                            status: "approved"
-                        },
-                        {
-                            id: "prod-106",
-                            store_name: "The Hamper Co.",
-                            item_name: "Handmade Ferrero Rocher & Red Rose Bouquet",
-                            description: "16 Ferrero chocolates artistically woven with fresh velvet red roses and satin ribbon wrap.",
-                            price: 999,
-                            original_price: 1399,
-                            category: "Gourmet",
-                            occasion: "Romance, Anniversary, Birthday",
-                            recipient: "For Her, For Him",
-                            image_url: "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=600&auto=format&fit=crop&q=80",
-                            rating: 4.9,
-                            reviews_count: 215,
-                            delivery_speed: "Midnight Available 🌙",
-                            status: "approved"
-                        }
-                    ];
-                    renderProducts(allProducts);
-                    renderFeaturedGrid(allProducts.slice(0, 3));
-                }
+            } catch (e) { console.warn("Render backend unavailable:", e.message); }
+
+            // 2) Try Supabase direct query (bypasses backend entirely)
+            if (!loaded && supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('products').select('*').order('created_at', { ascending: false });
+                    if (!error && data && data.length > 0) {
+                        allProducts = data;
+                        loaded = true;
+                        console.log("Loaded " + data.length + " products directly from Supabase.");
+                    }
+                } catch (e) { console.warn("Supabase direct query failed:", e.message); }
             }
+
+            // 3) Try local dev server
+            if (!loaded) {
+                try {
+                    const res = await fetch(`${LOCAL_API_URL}/api/products`, { signal: AbortSignal.timeout(2000) });
+                    if (res.ok) {
+                        const result = await res.json();
+                        if (result.success && result.data && result.data.length > 0) {
+                            ACTIVE_BACKEND_URL = LOCAL_API_URL;
+                            allProducts = result.data;
+                            loaded = true;
+                        }
+                    }
+                } catch (e) { /* local dev not running, expected */ }
+            }
+
+            // 4) Last resort: hardcoded demo data
+            if (!loaded && allProducts.length === 0) {
+                console.warn("All backends unavailable, using built-in demo tokens.");
+                allProducts = [
+                    {
+                        id: "prod-101", store_name: "Artisan Print & Engrave",
+                        item_name: "Custom Magic Color-Changing Photo Mug",
+                        description: "Pour hot beverage to reveal your secret picture & custom engraved quote.",
+                        price: 399, original_price: 599, category: "Personalized",
+                        occasion: "Birthday, Anniversary, Romance", recipient: "For Him, For Her, Bestie",
+                        image_url: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop&q=80",
+                        rating: 4.9, reviews_count: 142, delivery_speed: "Express 30m"
+                    },
+                    {
+                        id: "prod-102", store_name: "Artisan Print & Engrave",
+                        item_name: "Laser-Engraved Spotify Plaque with LED Stand",
+                        description: "Engrave your favorite song, scannable barcode, couple name & anniversary date on polished oak.",
+                        price: 749, original_price: 1099, category: "Personalized",
+                        occasion: "Anniversary, Romance, Friendship", recipient: "For Him, For Her, Bestie",
+                        image_url: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=600&auto=format&fit=crop&q=80",
+                        rating: 4.8, reviews_count: 98, delivery_speed: "Express 45m"
+                    },
+                    {
+                        id: "prod-103", store_name: "Aesthetic Vibes Decor",
+                        item_name: "Warm Glow Moon Night Lamp (16 Colors)",
+                        description: "3D printed rechargeable lunar lamp with wooden stand and soft touch mood lighting.",
+                        price: 649, original_price: 999, category: "Aesthetic Decor",
+                        occasion: "Birthday, Housewarming, Romance", recipient: "For Her, Bestie",
+                        image_url: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80",
+                        rating: 4.7, reviews_count: 86, delivery_speed: "Same Day"
+                    },
+                    {
+                        id: "prod-104", store_name: "The Hamper Co.",
+                        item_name: "Royale Gourmet Celebration Hamper",
+                        description: "Curated with Belgian artisan dark chocolates, roasted almonds, scented lavender candle, and brass keepsake box.",
+                        price: 1499, original_price: 2199, category: "Hampers",
+                        occasion: "Festivals, Congratulations, Birthday, Corporate", recipient: "For Parents, Corporate",
+                        image_url: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&auto=format&fit=crop&q=80",
+                        rating: 5.0, reviews_count: 64, delivery_speed: "Express 60m"
+                    },
+                    {
+                        id: "prod-105", store_name: "Bloom & Botanica",
+                        item_name: "Evergreen Jade Plant in Emoji Pot + Wish Card",
+                        description: "Air-purifying good luck Jade plant in designer ceramic pot with customizable miniature wishing chalkboard.",
+                        price: 349, original_price: 499, category: "Plants",
+                        occasion: "Friendship, Farewell, New Job, Birthday", recipient: "Bestie, Colleague",
+                        image_url: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=600&auto=format&fit=crop&q=80",
+                        rating: 4.9, reviews_count: 110, delivery_speed: "Express 30m"
+                    },
+                    {
+                        id: "prod-106", store_name: "The Hamper Co.",
+                        item_name: "Handmade Ferrero Rocher & Red Rose Bouquet",
+                        description: "16 Ferrero chocolates artistically woven with fresh velvet red roses and satin ribbon wrap.",
+                        price: 999, original_price: 1399, category: "Gourmet",
+                        occasion: "Romance, Anniversary, Birthday", recipient: "For Her, For Him",
+                        image_url: "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=600&auto=format&fit=crop&q=80",
+                        rating: 4.9, reviews_count: 215, delivery_speed: "Midnight Available"
+                    }
+                ];
+            }
+
+            renderProducts(allProducts);
+            renderFeaturedGrid(allProducts.slice(0, 3));
         }
 
         function renderProducts(products) {
